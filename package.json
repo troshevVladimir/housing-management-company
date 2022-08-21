@@ -6,11 +6,13 @@
   "scripts": {
     "dev": "webpack --config  .webpack/webpack.client.dev.js",
     "prod": "webpack --config .webpack/webpack.client.prod.js --progress",
-    "start": "webpack serve --config .webpack/webpack.hot.js"
+    "start": "webpack serve --config .webpack/webpack.hot.js",
+    "server": "nodemon ./server/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "type": "module",
   "devDependencies": {
     "@babel/core": "^7.17.9",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
@@ -18,9 +20,13 @@
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/runtime": "^7.17.9",
+    "@popperjs/core": "^2.11.6",
+    "@typescript-eslint/eslint-plugin": "^5.33.1",
+    "@typescript-eslint/parser": "^5.33.1",
     "@vue/cli-plugin-babel": "^5.0.4",
     "@vue/eslint-config-prettier": "^7.0.0",
     "babel-loader": "^8.2.4",
+    "bootstrap": "^5.2.0",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^3.4.1",
     "eslint": "^8.21.0",
@@ -32,6 +38,7 @@
     "image-webpack-loader": "^8.1.0",
     "mini-css-extract-plugin": "^2.6.0",
     "node-sass": "^7.0.1",
+    "nodemon": "^2.0.19",
     "postcss-loader": "^6.2.1",
     "postcss-preset-env": "^7.4.3",
     "precss": "^4.0.0",
@@ -41,8 +48,11 @@
     "svg-inline-loader": "^0.8.2",
     "terser-webpack-plugin": "^5.3.1",
     "thread-loader": "^3.0.4",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.7.4",
     "url-loader": "^4.1.1",
     "vue-loader": "^17.0.0",
+    "vue-style-loader": "^4.1.3",
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1",
@@ -50,7 +60,11 @@
   },
   "dependencies": {
     "@vue/compiler-sfc": "^3.2.31",
+    "axios": "^0.27.2",
     "core-js": "^3.21.1",
-    "vue": "^3.2.31"
+    "express": "^4.18.1",
+    "vue": "^3.2.31",
+    "vue-router": "4",
+    "vuex": "^4.0.2"
   }
 }

@@ -1,21 +1,20 @@
-const { join } = require("path");
 const webpack = require("webpack");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { VueLoaderPlugin } = require("vue-loader");
-
+const path = require('path');
 const isDev = true;
 
 module.exports = {
   devtool: "inline-source-map",
   entry: {
-    main: "./src/index.js"
+    main: "./src/index.js",
   },
   mode: "development",
   output: {
-    path: join(__dirname, "..", "dist"),
+    path: path.join(__dirname, "..", "dist"),
     filename: "js/[name].bundle.[fullhash].js",
-    chunkFilename: "chunks/[name].chunk.[fullhash].js"
+    chunkFilename: "chunks/[name].chunk.[fullhash].js",
   },
   target: "web",
   module: {
@@ -30,16 +29,24 @@ module.exports = {
       //   },
       // },
       {
+        test: /\.tsx?$/,
+        loader: "ts-loader",
+        options: {
+          appendTsSuffixTo: [/\.vue$/],
+        },
+        exclude: /node_modules/,
+      },
+      {
         test: /\.m?jsx?$/,
         exclude: (file) => {
           // always transpile js in vue files
           if (/\.vue\.jsx?$/.test(file)) {
-            return false
+            return false;
           }
           // Don't transpile node_modules
-          return /node_modules/.test(file)
+          return /node_modules/.test(file);
         },
-        use: ['thread-loader', 'babel-loader'],
+        use: ["thread-loader", "babel-loader"],
       },
       {
         test: /\.vue$/,
@@ -60,19 +67,23 @@ module.exports = {
           {
             loader: "file-loader",
             options: {
-              name: "[path][name]-[fullhash:8].[ext]"
-            }
-          }
-        ]
+              name: "[path][name]-[fullhash:8].[ext]",
+            },
+          },
+        ],
       },
       {
-        test: /\.css$|sass$|\.scss$/,
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.sass$|\.scss$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-            }
-          },
+          // {
+          //   loader: MiniCssExtractPlugin.loader,
+          //   options: {},
+          // },
+          'vue-style-loader',
           // {
           //   loader: 'cache-loader',
           //   options: {
@@ -85,8 +96,8 @@ module.exports = {
           {
             loader: "css-loader",
             options: {
-              sourceMap: isDev
-            }
+              sourceMap: isDev,
+            },
           },
           {
             loader: "postcss-loader",
@@ -94,10 +105,10 @@ module.exports = {
           {
             loader: "sass-loader",
             options: {
-              sourceMap: isDev
-            }
-          }
-        ]
+              sourceMap: isDev,
+            },
+          },
+        ],
       },
       {
         test: /\.svg$/,
@@ -106,30 +117,30 @@ module.exports = {
             loader: "svg-inline-loader",
             options: {
               limit: 10 * 1024,
-              noquotes: true
-            }
+              noquotes: true,
+            },
           },
           {
             loader: "url-loader",
             options: {
-              limit: 10 * 1024
-            }
+              limit: 10 * 1024,
+            },
           },
           {
             loader: "file-loader",
             options: {
               name: "[path][name].[ext]",
               outputPath: "images/",
-              emitFile: false
-            }
-          }
-        ]
+              emitFile: false,
+            },
+          },
+        ],
       },
-    ]
+    ],
   },
   optimization: {
     splitChunks: {
-      chunks: "all"
+      chunks: "all",
     },
     // minimizer: [
     //   new TerserJsPlugin({
@@ -140,32 +151,29 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
+      "process.env.NODE_ENV": JSON.stringify("development"),
     }),
     new HtmlWebpackPlugin({
       filename: "index.html",
-      template: join(__dirname, "..", "index.html"),
-      inject: true
+      template: path.join(__dirname, "..", "index.html"),
+      inject: true,
     }),
     // new HardSourceWebpackPlugin() // альтернатива cache-loader
-    new MiniCssExtractPlugin({
-      filename: "css/[name].bundle.[fullhash].css",
-      chunkFilename: "chunks/[id].chunk.[fullhash].css"
-    }),
+    // new MiniCssExtractPlugin({
+    //   filename: "css/[name].bundle.[fullhash].css",
+    //   chunkFilename: "chunks/[id].chunk.[fullhash].css",
+    // }),
     new VueLoaderPlugin(),
   ],
   stats: {
     children: true,
-    errorDetails: true
+    errorDetails: true,
   },
   resolve: {
-    extensions: [".vue", ".jsx", ".js", ".json"],
+    extensions: [".tsx", ".ts", ".vue", ".jsx", ".js", ".json"],
     alias: {
-      // this isn't technically needed, since the default `vue` entry for bundlers
-      // is a simple `export * from '@vue/runtime-dom`. However having this
-      // extra re-export somehow causes webpack to always invalidate the module
-      // on the first HMR update and causes the page to reload.
       vue: "@vue/runtime-dom",
+      '@': path.resolve('src'),
     },
   },
 };

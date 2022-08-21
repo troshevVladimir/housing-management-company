@@ -1,19 +1,25 @@
 <template>
-  <div>
-    <h1
-      :adsfasfdasdf="ad"
-      a="adfasdfasdf"
-      :asdfasdf="adasdadasdadasdadasdadasd"
-    >
-      Vue Hello
-    </h1>
-  </div>
+  <component :is="layout"></component>
 </template>
 
 <script>
-export default {
-  methods: {},
-};
+import { defineComponent } from "vue";
+import DefaultLayout from "@/layouts/DefaultLayout.vue";
+
+export default defineComponent({
+  data() {
+    return {
+      layout: "DefaultLayout",
+    };
+  },
+  components: {
+    DefaultLayout,
+  },
+});
 </script>
 
-<style scoped></style>
+<style lang="scss">
+body {
+  --bs-body-bg: rgb(106, 102, 128);
+}
+</style>
