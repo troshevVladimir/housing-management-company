@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 import userData from "./modules/userData";
 
-const store = createStore({
+export const store = createStore({
   state() {
     return {
     };
@@ -12,5 +12,3 @@ const store = createStore({
     userData
   }
 });
-
-export default store;

@@ -8,7 +8,6 @@ module.exports = merge(devConfig, {
     port: 8090,
     historyApiFallback: true,
     headers: { "Access-Control-Allow-Origin": "*" },
-    open: true
   },
   output: {
     publicPath: "/"

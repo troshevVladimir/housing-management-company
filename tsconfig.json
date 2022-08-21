@@ -1,23 +1,25 @@
 {
-    "compilerOptions": {
-        "outDir": "./build",
-        "noImplicitAny": true,
-        "sourceMap": true,
-        "allowJs": true,
-        "target": "esnext",
-        "module": "esnext",
-        "strict": true,
-        "jsx": "preserve",
-        "moduleResolution": "node",
-        "suppressImplicitAnyIndexErrors": true,
-        "skipLibCheck": true,
-        "strictPropertyInitialization": false,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true,
-        "baseUrl": "./",
-        "paths": {
-          "@/*": ["src/*"],
-        }
+  "compilerOptions": {
+    "outDir": "./build",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "suppressImplicitAnyIndexErrors": true,
+    "skipLibCheck": true,
+    "strictPropertyInitialization": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
     }
+  }
 }

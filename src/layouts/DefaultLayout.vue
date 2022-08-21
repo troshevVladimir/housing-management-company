@@ -56,7 +56,7 @@
   </main>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import DefaultAsside from "./DefaultAsside.vue";
 import { mapGetters, mapState } from 'vuex'
@@ -68,7 +68,7 @@ export default defineComponent({
   },
   computed: {
      ...mapState({
-      userName: state => state.userData.userName,
+      // userName: state => state.userData.userName,
     }),
     ...mapGetters([
       'userData/userName'

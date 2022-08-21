@@ -8,7 +8,7 @@ const isDev = true;
 module.exports = {
   devtool: "inline-source-map",
   entry: {
-    main: "./src/index.js",
+    main: "./src/index.ts",
   },
   mode: "development",
   output: {

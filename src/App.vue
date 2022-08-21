@@ -2,7 +2,7 @@
   <component :is="layout"></component>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 
