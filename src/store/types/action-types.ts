@@ -1,0 +1,3 @@
+export enum ActionTypes {
+  DEFINE_CURRENT_DIVICE = 'DEFINE_CURRENT_DIVICE',
+}
