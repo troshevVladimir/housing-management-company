@@ -1,22 +1,25 @@
-const { join } = require("path");
-const webpack = require("webpack");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const { VueLoaderPlugin } = require("vue-loader");
+import path from "path"
+import { fileURLToPath } from 'url';
+import webpack from 'webpack'
+// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
+import {VueLoaderPlugin} from 'vue-loader'
 
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isDev = false;
 
-module.exports = {
+export default {
   devtool: false,
   entry: {
-    main: "./src/index.js",
-    vendor: ["react", "react-dom"]
+    main: "./src/index.ts",
   },
   mode: "production",
   output: {
-    path: join(__dirname, "..", "public"),
+    path: path.join(__dirname, "..", "public"),
     filename: "js/[name].bundle.[fullhash].js",
     chunkFilename: "chunks/[name].chunk.[fullhash].js",
     publicPath: "/"
@@ -24,6 +27,14 @@ module.exports = {
   target: "web",
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        loader: "ts-loader",
+        options: {
+          appendTsSuffixTo: [/\.vue$/],
+        },
+        exclude: /node_modules/,
+      },
       {
         test: /\.m?jsx?$/,
         exclude: (file) => {
@@ -58,11 +69,12 @@ module.exports = {
       {
         test: /\.sass$|\.scss$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-            }
-          },
+          // {
+          //   loader: MiniCssExtractPlugin.loader,
+          //   options: {
+          //   }
+          // },
+          'vue-style-loader',
           {
             loader: "css-loader",
             options: {
@@ -157,7 +169,7 @@ module.exports = {
     // new HardSourceWebpackPlugin()
     new HtmlWebpackPlugin({
       filename: "index.html",
-      template: join(__dirname, "..", "index.html"),
+      template: path.join(__dirname, "..", "index.html"),
       inject: true,
       minify: true
     }),
@@ -172,8 +184,10 @@ module.exports = {
     errorDetails: true
   },
   resolve: {
-    extensions: [".vue", ".jsx", ".js", ".json"],
-    vue: "@vue/runtime-dom",
-    '@': path.resolve('src'),
+    extensions: [".tsx", ".ts", ".vue", ".jsx", ".js", ".json"],
+    alias: {
+      vue: "@vue/runtime-dom",
+      '@': path.resolve('src'),
+    },
   },
 };

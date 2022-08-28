@@ -1,7 +1,7 @@
-const {merge} = require("webpack-merge");
-const devConfig = require("./webpack.client.dev");
+import { merge } from 'webpack-merge'
+import devConfig from './webpack.client.dev.js'
 
-module.exports = merge(devConfig, {
+export default merge(devConfig, {
   devServer: {
     hot: true,
     open: true,

@@ -1,3 +1,3 @@
-import housesData from "./housesData";
+import housesData from "./housesData.ts";
 
 export default housesData

@@ -51,7 +51,7 @@
 <script>
 import ItemModal from '@/components/ItemModal.vue'
 import CustomLoader from '@/components/CustomLoader.vue'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import * as _ from 'lodash'
 
 export default {
@@ -96,41 +96,50 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions({
+			getHouses: 'housesData/getAllHouses',
+		}),
 		sendData(data) {
-			// fetch('apiLinck', {
-			// 	method: 'POST',
-			// 	headers: {
-			// 		'Content-Type': 'application/json;charset=utf-8',
-			// 	},
-			// 	body: JSON.stringify(data),
-			// })
-			// 	.then((resp) => resp.json())
-			// 	.then((response) => {
-			// 		this.formFields = { ...this.formFields, response }
-			// 	})
-			let rq = new Promise((res, rej) => {
-				setTimeout(() => {
-					res('success')
-				}, 2000)
+			fetch('/api/houses/', {
+				method: 'POST',
+				body: data,
 			})
-
-			rq.then((res) => console.log(res))
-			rq.finally(() => {
-				this.loading = false
-			})
+				.then((resp) => {
+					return resp.json()
+				})
+				.then((response) => {
+					debugger
+					this.setHouse(response)
+				})
+				.catch((e) => {
+					console.error(e)
+				})
+				.finally(() => {
+					this.loading = false
+				})
 		},
 		debounsedSend: _.throttle(function (data) {
-			console.log('sended')
 			this.sendData(data)
 		}, 1000),
-		submit(data) {
+		submit() {
 			this.validate()
 			if (this.valid) {
 				this.loading = true
-				this.debounsedSend()
+				this.formDataInit()
+				this.debounsedSend(this.formData)
 				this.closeModal()
 			} else {
+				console.log('invalid handler')
 			}
+		},
+		formDataInit() {
+			const formData = new FormData()
+			this.formFields.forEach((el) => {
+				formData.append(el.name, el.value)
+			})
+			this.formData = formData
+
+			return formData
 		},
 		showModal() {
 			this.modalShow = true
@@ -152,6 +161,16 @@ export default {
 		...mapGetters({
 			houses: 'housesData/getAll',
 		}),
+
+		...mapMutations({
+			setHouse: 'housesData/setHouse',
+		}),
+	},
+	mounted() {
+		this.loading = true
+		this.getHouses().then(() => {
+			this.loading = false
+		})
 	},
 }
 </script>

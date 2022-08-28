@@ -1,23 +1,32 @@
-import { Houses } from './model'
+import { Houses, House } from './model.js'
 
 const housesData = {
     state: () => {
         return {
-            houses: [
-                {
-                    id: 1,
-                    address: 'address',
-                    tenants: 2,
-                    livers: 3,
-                },
-                {
-                    id: 2,
-                    address: '123address',
-                    tenants: 53,
-                    livers: 123,
-                }
-            ] as Houses
+            houses: [] as Houses
         }
+    },
+    actions: {
+        getAllHouses(ctx: any) {
+            return fetch('/api/houses/')
+                .then(
+                    (res) => {
+                        return res.json()
+                    }
+                ).then(
+                    (response) => {
+                        ctx.commit('setHouses', response)
+                    }
+                )
+        }
+    },
+    mutations: {
+        setHouses(state: any, payload: House ) {
+            state.houses = payload
+        },
+        setHouse(state: any, payload: House ) {
+            state.houses.push(payload)
+        },
     },
     getters: {
         getAll(state: any) {

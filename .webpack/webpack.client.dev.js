@@ -1,18 +1,22 @@
-const webpack = require("webpack");
+import path from "path"
+import { fileURLToPath } from 'url';
+import webpack from 'webpack'
 // const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { VueLoaderPlugin } = require("vue-loader");
-const path = require('path');
-const isDev = true;
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import {VueLoaderPlugin} from 'vue-loader'
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const isDev = false;
+
+export default {
   devtool: "inline-source-map",
   entry: {
     main: "./src/index.ts",
   },
   mode: "development",
   output: {
-    path: path.join(__dirname, "..", "dist"),
+    path: path.join(__dirname, "..", "public"),
     filename: "js/[name].bundle.[fullhash].js",
     chunkFilename: "chunks/[name].chunk.[fullhash].js",
   },
