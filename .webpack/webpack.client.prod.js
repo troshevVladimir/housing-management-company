@@ -52,7 +52,11 @@ module.exports = {
         use: "vue-loader",
       },
       {
-        test: /\.css$|sass$|\.scss$/,
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.sass$|\.scss$/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
@@ -157,10 +161,10 @@ module.exports = {
       inject: true,
       minify: true
     }),
-    new MiniCssExtractPlugin({
-      filename: "css/[name].bundle.[fullhash].css",
-      chunkFilename: "chunks/[id].chunk.[fullhash].css"
-    }),
+    // new MiniCssExtractPlugin({
+    //   filename: "css/[name].bundle.[fullhash].css",
+    //   chunkFilename: "chunks/[id].chunk.[fullhash].css"
+    // }),
     new VueLoaderPlugin(),
   ],
   stats: {
@@ -169,7 +173,7 @@ module.exports = {
   },
   resolve: {
     extensions: [".vue", ".jsx", ".js", ".json"],
-    alias: {
-    },
+    vue: "@vue/runtime-dom",
+    '@': path.resolve('src'),
   },
 };

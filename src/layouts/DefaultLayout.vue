@@ -1,15 +1,15 @@
 <template>
-  <main class="main">
-    <DefaultHeader :user-name="userName"></DefaultHeader>
+	<main class="main">
+		<DefaultHeader :user-name="userName"></DefaultHeader>
 
-    <section class="content">
-      <router-view></router-view>
-    </section>
+		<section class="content">
+			<router-view></router-view>
+		</section>
 
-    <DefaultAsside></DefaultAsside>
+		<DefaultAsside></DefaultAsside>
 
-    <footer class="footer">footer</footer>
-  </main>
+		<footer class="footer">footer</footer>
+	</main>
 </template>
 
 <script lang="ts">
@@ -19,49 +19,52 @@ import DefaultHeader from "./DefaultHeader.vue";
 import { mapGetters, mapState } from 'vuex'
 
 export default defineComponent({
-  name: "default-layout",
-  components: {
-    DefaultAsside,
-    DefaultHeader
-  },
-  computed: {
-    ...mapGetters({
-      userName: 'getUserName'
-    })
-  }
+	name: "default-layout",
+	components: {
+		DefaultAsside,
+		DefaultHeader
+	},
+	computed: {
+		...mapGetters({
+			userName: 'getUserName'
+		})
+	}
 });
 </script>
 
 <style lang="scss">
-.main {
-  display: grid;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  grid-template-rows: 70px auto 100px;
-  grid-template-columns: 200px auto;
+	.main {
+		display: grid;
+		width: 100%;
+		height: 100vh;
+		overflow: hidden;
+		grid-template-rows: 70px auto 100px;
+		grid-template-columns: 200px auto;
 
-  grid-template-areas:
-    "header header"
-    "sidebar content"
-    "footer footer";
+		grid-template-areas:
+			"header header"
+			"sidebar content"
+			"footer footer";
 
-  .header {
-    grid-area: header;
-  }
+		.header {
+			grid-area: header;
+			padding-right: 20px;
+		}
 
-  .sidebar {
-    grid-area: sidebar;
-    background-color: rgb(110, 60, 60);
-  }
+		.sidebar {
+			grid-area: sidebar;
+			background-color: rgb(110, 60, 60);
+		}
 
-  .content {
-    grid-area: content;
-    background-color: rgb(78, 32, 185);
-  }
+		.content {
+			grid-area: content;
+			background-color: rgb(78, 32, 185);
 
-  .footer {
-    grid-area: footer;
-  }
-}
+			padding: 20px 15px;
+		}
+
+		.footer {
+			grid-area: footer;
+		}
+	}
 </style>

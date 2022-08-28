@@ -20,7 +20,7 @@ const housesData = {
         }
     },
     getters: {
-        address(state: any) {
+        getAll(state: any) {
             return state.houses
         }
     },
