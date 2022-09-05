@@ -1,4 +1,3 @@
-import { json } from 'express'
 import { Houses, House } from './model.js'
 
 const housesData = {
@@ -33,9 +32,10 @@ const housesData = {
                 return el.id !== payload
             })
         },
-        updateHouse(state: any, payload: object) {
-            // Обновить элемент payload.id в state.houses
-            // (splice(id, 1 , newItem))
+        updateHouse(state: any, payload: House) {
+            console.log();
+            const id = state.houses.findIndex((el: House) => el.id === payload.id)
+            state.houses.splice(id, 1 , payload)
         }
     },
     getters: {
