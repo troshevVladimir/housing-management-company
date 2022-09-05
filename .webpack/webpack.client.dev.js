@@ -15,10 +15,12 @@ export default {
     main: "./src/index.ts",
   },
   mode: "development",
+  watch: true,
   output: {
     path: path.join(__dirname, "..", "public"),
     filename: "js/[name].bundle.[fullhash].js",
     chunkFilename: "chunks/[name].chunk.[fullhash].js",
+    clean: true,
   },
   target: "web",
   module: {

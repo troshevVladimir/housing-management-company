@@ -22,21 +22,29 @@ const mockData = [
 export const getAll = (req, res) => {
   setTimeout(() => {
     res.status(200).json(mockData)
-  }, 2000)
+  }, 1000)
 }
 
 export const create = (req, res) => {
   const newHouse = req.body
   mockData.push(newHouse)
-  console.log(newHouse);
   setTimeout(() => {
     // req.files; - files form data
     res.status(201).json(newHouse)
-  }, 2000)
+  }, 1000)
 }
 
 export const remove = (req, res) => {
   setTimeout(() => {
-    res.status(200).send(mockData)
-  }, 2000)
+    res.status(200).send(req.params.id)
+  }, 1000)
+}
+
+export const update = (req, res) => {
+  const id = req.params.id
+  const updatedHouse = req.body
+  console.log(updatedHouse);
+  setTimeout(() => {
+    res.status(200).send(updatedHouse)
+  }, 1000)
 }

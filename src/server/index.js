@@ -3,6 +3,9 @@ import formData from 'express-form-data'
 import router from './router.js'
 import path from "path"
 import { fileURLToPath } from 'url';
+import launchMiddleware from 'launch-editor-middleware'
+
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express()
@@ -12,6 +15,8 @@ app.use(express.urlencoded({ extended: false }))
 app.use(formData.parse());
 
 app.use(router)
+
+app.use('/__open-in-editor', launchMiddleware())
 
 // app.get('/', (req, res) => {
 //     res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'))
