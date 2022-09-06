@@ -1,15 +1,15 @@
 <template>
-	<main class="main">
-		<DefaultHeader :user-name="userName"></DefaultHeader>
+  <main class="main">
+    <DefaultHeader :user-name="userName"></DefaultHeader>
 
-		<section class="content">
-			<router-view></router-view>
-		</section>
+    <section class="content">
+      <router-view></router-view>
+    </section>
 
-		<DefaultAsside></DefaultAsside>
+    <DefaultAsside></DefaultAsside>
 
-		<footer class="footer">footer</footer>
-	</main>
+    <footer class="footer">footer</footer>
+  </main>
 </template>
 
 <script lang="ts">
@@ -41,10 +41,14 @@ export default defineComponent({
 		grid-template-rows: 70px auto 100px;
 		grid-template-columns: 200px auto;
 
+		@media screen and (max-width: 600px) {
+			grid-template-columns: 1px auto;
+		}
+
 		grid-template-areas:
-			"header header"
-			"sidebar content"
-			"footer footer";
+			'header header'
+			'sidebar content'
+			'footer footer';
 
 		.header {
 			grid-area: header;
@@ -54,6 +58,13 @@ export default defineComponent({
 		.sidebar {
 			grid-area: sidebar;
 			background-color: rgb(110, 60, 60);
+
+			@media screen and (max-width: 600px) {
+				position: absolute;
+				left: 0;
+				top: 0;
+				transform: translate(-100%);
+			}
 		}
 
 		.content {

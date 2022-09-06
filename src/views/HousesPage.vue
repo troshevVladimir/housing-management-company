@@ -6,19 +6,19 @@
       <table class="houses-page__table table align-middle table-dark table-striped table-hover">
         <thead>
           <tr>
-            <th scope="col">№</th>
+            <th class="houses-page__num-col" scope="col">№</th>
             <th scope="col">Address</th>
-            <th scope="col">Tenants</th>
-            <th scope="col">Livers</th>
+            <th class="houses-page__dig-col" scope="col">Tenants</th>
+            <th class="houses-page__dig-col" scope="col">Livers</th>
             <th scope="col" class="houses-page__actions-col"></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(house, idx) in houses" :key="house.id">
-            <th scope="row">{{idx + 1 }}</th>
+            <th class="houses-page__num-col" scope="row">{{idx + 1 }}</th>
             <td>{{house.address}}</td>
-            <td>{{house.tenants}}</td>
-            <td>{{house.livers}}</td>
+            <td class="houses-page__dig-col">{{house.tenants}}</td>
+            <td class="houses-page__dig-col">{{house.livers}}</td>
             <td class="houses-page__actions-col">
               <button
                 type="button"
@@ -256,9 +256,14 @@ export default {
 
 <style lang='scss'>
 	.houses-page {
+		td {
+			max-width: 70px;
+		}
+
 		&__page-title {
 			margin-bottom: 40px;
 		}
+
 		&__error {
 			font-weight: 600;
 			font-size: 20px;
@@ -266,7 +271,18 @@ export default {
 		}
 
 		&__actions-col {
-			max-width: 30px;
+			text-align: right;
+			width: 120px;
+		}
+
+		&__num-col {
+			text-align: left;
+			width: 10px;
+		}
+
+		&__dig-col {
+			text-align: left;
+			width: 100px;
 		}
 	}
 </style>
