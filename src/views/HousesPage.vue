@@ -1,6 +1,6 @@
 <template>
   <div class="houses-page">
-    <h1 class="houses-page__page-title">{{this.$route.params.title}}</h1>
+    <h1 class="houses-page__page-title">{{$route.params.title}}</h1>
 
     <div class="table-responsive">
       <table class="houses-page__table table align-middle table-dark table-striped table-hover">
@@ -35,7 +35,7 @@
         </tbody>
       </table>
     </div>
-    <item-modal title="Edit house" v-if="modalShow">
+    <item-modal :params="modalParams" v-if="modalShow">
       <form class="validated-form mb-5">
         <div class="mb-3 validated-form__field" v-for="field in formFields" :key="field.name">
           <label :for="field.name" class="form-label">{{field.label}}</label>
@@ -50,7 +50,7 @@
         </div>
       </form>
       <button class="btn btn-primary me-2" @click="closeModal">Close</button>
-      <button class="btn btn-success" @click="submit(this.mdalParams.id)">Submit</button>
+      <button class="btn btn-success" @click="submit(mdalParams.id)">Submit</button>
     </item-modal>
 
     <custom-loader v-if="loading"></custom-loader>
@@ -61,29 +61,55 @@
   </div>
 </template>
 
-<script>
-import ItemModal from '@/components/ItemModal.vue'
+<script lang='ts'>
+import { defineComponent } from 'vue'
+import ItemModal from '@/components/ItemModal/ItemModal.vue'
+import { ModalParams } from '@/components/ItemModal/types'
 import CustomLoader from '@/components/CustomLoader.vue'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import * as _ from 'lodash'
 
-export default {
+type ID = number | string
+
+interface FormField {
+	name: string
+	label: string
+	type: string
+	value: string
+	required: boolean
+	invalidText: string
+}
+
+interface MdalParams {
+	id: ID
+	method: string
+}
+
+interface State {
+	loading: boolean
+	modalShow: boolean
+	fromData: null
+	valid: boolean
+	mdalParams: MdalParams
+	formFields: Array<FormField>,
+}
+
+export default defineComponent({
 	name: 'houses-page',
 	components: {
 		ItemModal,
 		CustomLoader,
 	},
-	data() {
+	data(): State {
 		return {
 			loading: false,
 			modalShow: false,
 			fromData: null,
 			valid: true,
 			mdalParams: {
-				id: null,
+				id: '',
 				method: '',
 			},
-			form: null,
 			formFields: [
 				{
 					name: 'address',
@@ -122,13 +148,13 @@ export default {
 			deleteHouse: 'housesData/deleteHouse',
 		}),
 		clearInputs() {
-			this.formFields.forEach((el) => {
+			this.formFields.forEach((el: FormField) => {
 				el.value = ''
 			})
 		},
-		sendData(data) {
+		sendData<T>(data: any): Promise<T> {
 			const that = this
-			fetch('/api/houses/', {
+			return fetch('/api/houses/', {
 				method: 'POST',
 				body: data,
 			})
@@ -138,6 +164,7 @@ export default {
 				.then((response) => {
 					that.clearInputs()
 					that.setHouse(response)
+					return response
 				})
 				.catch((e) => {
 					console.error(e)
@@ -146,16 +173,16 @@ export default {
 					this.loading = false
 				})
 		},
-		debounsedUpdate: _.throttle(function (id, data) {
+		debounsedUpdate: _.throttle(function (id: ID, data: Array<FormField>) {
 			this.updateData(id, data)
 		}, 1000),
-		debounsedSend: _.throttle(function (data) {
+		debounsedSend: _.throttle(function (data: Array<FormField>) {
 			this.sendData(data)
 		}, 1000),
-		debounsedDelete: _.throttle(function (id) {
+		debounsedDelete: _.throttle(function (id: ID) {
 			this.deleteItem(id)
 		}, 1000),
-		deleteItem(id) {
+		deleteItem(id: ID) {
 			const that = this
 			fetch(`/api/houses/${id}`, {
 				method: 'DELETE',
@@ -167,15 +194,15 @@ export default {
 					that.deleteHouse(response)
 				})
 		},
-		prepareForUpdate(id) {
+		prepareForUpdate(id: ID) {
 			this.mdalParams.id = id
 			this.showModal('put')
 			const houseSelectedData = this.house(id)
-			this.formFields.forEach((el) => {
+			this.formFields.forEach((el: FormField) => {
 				el.value = houseSelectedData[el.name]
 			})
 		},
-		updateData(id, data) {
+		updateData(id: ID, data: any) {
 			const that = this
 			fetch(`/api/houses/${id}`, {
 				method: 'PUT',
@@ -195,7 +222,7 @@ export default {
 					this.loading = false
 				})
 		},
-		submit(id) {
+		submit(id: ID) {
 			this.validate()
 			if (this.valid) {
 				this.loading = true
@@ -214,24 +241,24 @@ export default {
 		},
 		formDataInit() {
 			const formData = new FormData()
-			this.formFields.forEach((el) => {
+			this.formFields.forEach((el: FormField) => {
 				formData.append(el.name, el.value)
 			})
 			this.formData = formData
 
 			return formData
 		},
-		showModal(method) {
+		showModal(method: string): void {
 			this.mdalParams.method = method
 			this.modalShow = true
 		},
-		closeModal() {
+		closeModal(): void {
 			this.modalShow = false
 			this.clearInputs()
 		},
 		validate() {
 			let valid = true
-			this.formFields.forEach((el) => {
+			this.formFields.forEach((el: FormField) => {
 				if ((el.value?.length && el.value.length < 0) || !el.value) {
 					valid = false
 				}
@@ -244,6 +271,11 @@ export default {
 			houses: 'housesData/getAll',
 			house: 'housesData/getHouse',
 		}),
+		modalParams(): ModalParams {
+			return {
+				title: 'asd'
+			}
+		}
 	},
 	mounted() {
 		this.loading = true
@@ -251,7 +283,7 @@ export default {
 			this.loading = false
 		})
 	},
-}
+})
 </script>
 
 <style lang='scss'>

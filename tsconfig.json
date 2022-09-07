@@ -2,6 +2,7 @@
   "compilerOptions": {
     "outDir": "./build",
     "noImplicitAny": true,
+    "noImplicitThis": false,
     "sourceMap": true,
     "allowJs": true,
     "target": "esnext",

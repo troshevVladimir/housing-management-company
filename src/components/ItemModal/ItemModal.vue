@@ -9,7 +9,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title">{{title}}</h3>
+          <h3 class="modal-title">{{params.title}}</h3>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -20,16 +20,19 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang='ts'>
+import { defineComponent, PropType } from 'vue';
+import { ModalParams } from './types'
+
+export default defineComponent({
 	name: 'item-modal',
 	props: {
-		title: {
-			type: String,
+		params: {
+			type: Object as PropType<ModalParams>,
 			required: true,
 		},
 	},
-}
+})
 </script>
 
 <style>
