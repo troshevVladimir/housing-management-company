@@ -3,24 +3,41 @@ import { Houses, House } from './model.js'
 const housesData = {
     state: () => {
         return {
-            houses: [] as Houses
+            houses: [] as Houses,
+            error: null
         }
     },
     actions: {
         getAllHouses(ctx: any) {
-            return fetch('/api/houses/')
+            return fetch('/api/houses/', {
+                method: "GET",
+                headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('token'),
+					'Content-Type': 'application/json; charset=utf-8'
+				},
+            })
                 .then(
                     (res) => {
                         return res.json()
                     }
                 ).then(
                     (response) => {
+                        if (response.message) {
+                            ctx.commit('setError', response.message)
+                            throw new Error(response.message)
+                        }
                         ctx.commit('setHouses', response)
                     }
                 )
+                .catch((e)=>  {
+                    console.log(e);
+                })
         }
     },
     mutations: {
+        setError(state: any, payload: string) {
+            state.error = payload
+        },
         setHouses(state: any, payload: House ) {
             state.houses = payload
         },
@@ -39,6 +56,9 @@ const housesData = {
         }
     },
     getters: {
+        getError(state: any) {
+            return state.error
+        },
         getAll(state: any) {
             return state.houses
         },

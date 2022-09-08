@@ -4,9 +4,9 @@ import { validationResult } from 'express-validator'
 import jwt from 'jsonwebtoken'
 import config from './../config.js'
 
-const generateAccessTocken = (id, role) => {
+const generateAccessTocken = (id, role, userName) => {
   const payload = {
-    id, role
+    id, role, userName
   }
 
   return jwt.sign(payload, config.secret, {expiresIn: '24h'})
@@ -25,7 +25,7 @@ class AuthController {
       const guest = await db.query(`SELECT * from users WHERE email='${email}'`)
 
       if (guest.rows.length) {
-        return res.status(400).json({massage: 'Пользователь уже существует'})
+        return res.status(400).json({message: 'Пользователь уже существует'})
       }
 
       const hashPassword = bcrypt.hashSync(password, 8);
@@ -33,10 +33,10 @@ class AuthController {
       const roleId = await getRolesId(role)
 
       const newUser = await db.query(`INSERT INTO users (email, role_id, password) values ($1, $2, $3) RETURNING *`, [email, roleId, hashPassword])
-      res.status(200).json(newUser.rows[0])
+      return res.status(200).json(newUser.rows[0])
     } catch (error) {
       console.log(error);
-      res.status(400).json({massage: 'somthing went wrong'})
+      return res.status(400).json({message: 'somthing went wrong'})
     }
   }
 
@@ -45,27 +45,27 @@ class AuthController {
       const currentUser = await db.query(`SELECT * from users WHERE email='${req.body.email}'`)
 
       if (!currentUser || !currentUser.rows.length) {
-        res.status(404).json({massage: 'Пользователь не найден'})
+        return res.status(404).json({message: 'Пользователь не найден'})
       }
 
       const isPasworValid = bcrypt.compareSync(req.body.password, currentUser.rows[0].password);
 
       if (!isPasworValid) {
-        return res.status(404).json({massage: 'Пароль не верен'})
+        return res.status(404).json({message: 'Пароль не верен'})
       }
 
-      const token = generateAccessTocken(currentUser.rows[0].id, await getRoleById(currentUser.rows[0].role_id))
-      res.status(200).json({token})
+      const token = generateAccessTocken(currentUser.rows[0].id, await getRoleById(currentUser.rows[0].role_id, currentUser.rows[0].email))
+      return res.status(200).json({token, userName: req.body.email})
     } catch (error) {
       console.log(error);
-      res.status(400).json({massage: 'somthing went wrong'})
+      return res.status(400).json({message: 'somthing went wrong'})
     }
   }
 
   async getUsers (req, res) {
     try {
       const users = await db.query(`SELECT * from users`)
-      res.status(200).json(users.rows)
+      return res.status(200).json(users.rows)
     } catch (error) {
       console.log(error);
     }
@@ -74,7 +74,7 @@ class AuthController {
   async getRoles (req, res) {
     try {
       const roles = await db.query(`SELECT * from roles`)
-      res.status(200).json(roles.rows)
+      return res.status(200).json(roles.rows)
     } catch (error) {
       console.log(error);
     }

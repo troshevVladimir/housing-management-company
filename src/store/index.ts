@@ -5,6 +5,7 @@ import { Mutations, mutations } from './mutations'
 import { Actions, actions } from './actions'
 
 import housesData from './modules/housesData'
+import userData from './modules/userData'
 
 export const store = createStore({
   state,
@@ -12,6 +13,7 @@ export const store = createStore({
   mutations,
   actions,
   modules: {
-    housesData
+    housesData,
+    userData
   }
 });

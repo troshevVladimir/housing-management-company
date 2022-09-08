@@ -2,6 +2,8 @@
   <div class="houses-page">
     <h1 class="houses-page__page-title">{{$route.params.title}}</h1>
 
+    <span v-html="getError"></span>
+
     <div class="table-responsive">
       <table class="houses-page__table table align-middle table-dark table-striped table-hover">
         <thead>
@@ -140,7 +142,7 @@ export default defineComponent({
 	},
 	methods: {
 		...mapActions({
-			getHouses: 'housesData/getAllHouses',
+			getHouses: 'housesData/getAllHouses'
 		}),
 		...mapMutations({
 			setHouse: 'housesData/setHouse',
@@ -156,6 +158,10 @@ export default defineComponent({
 			const that = this
 			return fetch('/api/houses/', {
 				method: 'POST',
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('token'),
+					'Content-Type': 'application/json; charset=utf-8'
+				},
 				body: data,
 			})
 				.then((resp) => {
@@ -270,6 +276,7 @@ export default defineComponent({
 		...mapGetters({
 			houses: 'housesData/getAll',
 			house: 'housesData/getHouse',
+			getError: 'housesData/getError'
 		}),
 		modalParams(): ModalParams {
 			return {

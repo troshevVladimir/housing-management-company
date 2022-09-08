@@ -8,11 +8,10 @@ export default function (req, res, next) {
   }
 
   try {
-    console.log(req.headers.authorization);
-    const token = req.headers.authorization.split(' ')[1]
+    const token = req.headers.authorization?.split(' ')[1]
 
     if (!token) {
-      return res.status(400).json({massage: 'You not authorazed'})
+      return res.status(400).json({message: 'You not authorazed'})
     }
 
     let decodedData
@@ -20,7 +19,7 @@ export default function (req, res, next) {
     try {
       decodedData = jwt.verify(token, config.secret)
     } catch (error) {
-      return res.status(400).json({massage: 'invalid token'})
+      return res.status(400).json({message: 'invalid token'})
     }
 
     req.user = decodedData

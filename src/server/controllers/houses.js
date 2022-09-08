@@ -1,27 +1,5 @@
 import db from './../db/db.js'
 
-
-const mockData = [
-  {
-      id: 1,
-      address: 'address',
-      tenants: 2,
-      livers: 3,
-  },
-  {
-      id: 2,
-      address: '123address',
-      tenants: 53,
-      livers: 123,
-  },
-  {
-      id: 3,
-      address: '123address',
-      tenants: 53,
-      livers: 123,
-  }
-]
-
 export const getAll = async (req, res) => {
   const allHouses = await db.query(`SELECT * from houses`)
   res.status(200).json(allHouses.rows)
