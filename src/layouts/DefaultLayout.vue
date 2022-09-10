@@ -1,22 +1,22 @@
 <template>
-	<main class="main">
-		<DefaultHeader :user-name="userName"></DefaultHeader>
+  <main class="main">
+    <DefaultHeader></DefaultHeader>
 
-		<section class="content">
-			<router-view></router-view>
-		</section>
+    <section class="content">
+      <router-view></router-view>
+    </section>
 
-		<DefaultAsside></DefaultAsside>
+    <DefaultAsside></DefaultAsside>
 
-		<footer class="footer">footer</footer>
-	</main>
+    <footer class="footer">footer</footer>
+  </main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import DefaultAsside from "./DefaultAsside.vue";
-import DefaultHeader from "./DefaultHeader.vue";
-import { mapGetters, mapState } from 'vuex'
+import DefaultAsside from "../components/DefaultAsside.vue";
+import DefaultHeader from "../components/DefaultHeader.vue";
+import { mapGetters, mapActions } from 'vuex'
 
 export default defineComponent({
 	name: "default-layout",
@@ -28,6 +28,14 @@ export default defineComponent({
 		...mapGetters({
 			userName: 'getUserName'
 		})
+	},
+	methods: {
+		...mapActions({
+			initUserFromStor: 'userData/initUserFromStor'
+		})
+	},
+	mounted() {
+		this.initUserFromStor()
 	}
 });
 </script>
@@ -42,9 +50,9 @@ export default defineComponent({
 		grid-template-columns: 200px auto;
 
 		grid-template-areas:
-			"header header"
-			"sidebar content"
-			"footer footer";
+			'header header'
+			'sidebar content'
+			'footer footer';
 
 		.header {
 			grid-area: header;
@@ -58,7 +66,7 @@ export default defineComponent({
 
 		.content {
 			grid-area: content;
-			background-color: rgb(78, 32, 185);
+			background-color: rgb(101, 97, 109);
 
 			padding: 20px 15px;
 		}

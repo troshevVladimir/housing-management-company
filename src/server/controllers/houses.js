@@ -1,33 +1,12 @@
 import db from './../db/db.js'
 
-
-const mockData = [
-  {
-      id: 1,
-      address: 'address',
-      tenants: 2,
-      livers: 3,
-  },
-  {
-      id: 2,
-      address: '123address',
-      tenants: 53,
-      livers: 123,
-  },
-  {
-      id: 3,
-      address: '123address',
-      tenants: 53,
-      livers: 123,
-  }
-]
-
 export const getAll = async (req, res) => {
   const allHouses = await db.query(`SELECT * from houses`)
   res.status(200).json(allHouses.rows)
 }
 
 export const create = async (req, res) => {
+  console.log(req.body);
   const newHouse = await db.query(`INSERT INTO houses (address, livers, tenants) values ($1, $2, $3) RETURNING *`, [req.body.address, req.body.livers, req.body.tenants])
   // req.files; - files form data
   res.status(201).json(newHouse.rows[0])

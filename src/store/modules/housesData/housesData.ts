@@ -3,24 +3,41 @@ import { Houses, House } from './model.js'
 const housesData = {
     state: () => {
         return {
-            houses: [] as Houses
+            houses: [] as Houses,
+            error: null
         }
     },
     actions: {
         getAllHouses(ctx: any) {
-            return fetch('/api/houses/')
+            return fetch('/api/houses/', {
+                method: "GET",
+                headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('token'),
+					'Content-Type': 'application/json; charset=utf-8'
+				},
+            })
                 .then(
                     (res) => {
                         return res.json()
                     }
                 ).then(
                     (response) => {
+                        if (response.message) {
+                            ctx.commit('setError', response.message)
+                            console.log(response.message);
+                        }
                         ctx.commit('setHouses', response)
                     }
                 )
+                .catch((e)=>  {
+                    console.log(e);
+                })
         }
     },
     mutations: {
+        setError(state: any, payload: string) {
+            state.error = payload
+        },
         setHouses(state: any, payload: House ) {
             state.houses = payload
         },
@@ -32,6 +49,9 @@ const housesData = {
                 return el.id !== payload
             })
         },
+        clear(state: any) {
+            state.error = ''
+        },
         updateHouse(state: any, payload: House) {
             console.log();
             const id = state.houses.findIndex((el: House) => el.id === payload.id)
@@ -39,6 +59,9 @@ const housesData = {
         }
     },
     getters: {
+        getError(state: any) {
+            return state.error
+        },
         getAll(state: any) {
             return state.houses
         },

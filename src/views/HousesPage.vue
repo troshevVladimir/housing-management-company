@@ -2,6 +2,8 @@
   <div class="houses-page">
     <h1 class="houses-page__page-title">{{$route.params.title}}</h1>
 
+    <span v-html="getError"></span>
+
     <div class="table-responsive">
       <table class="houses-page__table table align-middle table-dark table-striped table-hover">
         <thead>
@@ -10,7 +12,7 @@
             <th scope="col">Address</th>
             <th scope="col">Tenants</th>
             <th scope="col">Livers</th>
-            <th scope="col" class="houses-page__actions-col"></th>
+            <th v-if="canDelete || canEdit" scope="col" class="houses-page__actions-col"></th>
           </tr>
         </thead>
         <tbody>
@@ -19,23 +21,25 @@
             <td>{{house.address}}</td>
             <td>{{house.tenants}}</td>
             <td>{{house.livers}}</td>
-            <td class="houses-page__actions-col">
+            <td class="houses-page__actions-col" v-if="canDelete || canEdit">
               <button
                 type="button"
                 class="btn btn-danger me-2"
                 @click="debounsedDelete(house.id)"
+                v-if="canEdit"
               >&times;</button>
               <button
                 type="button"
                 class="btn btn-outline-info"
                 @click="prepareForUpdate(house.id)"
+                v-if="canDelete"
               >Edit</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <item-modal :params="modalParams" v-if="modalShow">
+    <item-modal :params="modalParams" v-if="modalShow && canCreate">
       <form class="validated-form mb-5">
         <div class="mb-3 validated-form__field" v-for="field in formFields" :key="field.name">
           <label :for="field.name" class="form-label">{{field.label}}</label>
@@ -57,7 +61,12 @@
 
     <div class="houses-page__error" v-if="!valid">Форма заполнена не верно</div>
 
-    <button type="button" class="d-block btn btn-primary" @click="showModal('post')">Add new House</button>
+    <button
+      v-if="canCreate"
+      type="button"
+      class="d-block btn btn-primary"
+      @click="showModal('post')"
+    >Add new House</button>
   </div>
 </template>
 
@@ -140,7 +149,7 @@ export default defineComponent({
 	},
 	methods: {
 		...mapActions({
-			getHouses: 'housesData/getAllHouses',
+			getHouses: 'housesData/getAllHouses'
 		}),
 		...mapMutations({
 			setHouse: 'housesData/setHouse',
@@ -154,8 +163,12 @@ export default defineComponent({
 		},
 		sendData<T>(data: any): Promise<T> {
 			const that = this
+
 			return fetch('/api/houses/', {
 				method: 'POST',
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('token'),
+				},
 				body: data,
 			})
 				.then((resp) => {
@@ -186,6 +199,9 @@ export default defineComponent({
 			const that = this
 			fetch(`/api/houses/${id}`, {
 				method: 'DELETE',
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('token'),
+				},
 			})
 				.then((res) => {
 					return res.json()
@@ -206,6 +222,9 @@ export default defineComponent({
 			const that = this
 			fetch(`/api/houses/${id}`, {
 				method: 'PUT',
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('token'),
+				},
 				body: data,
 			})
 				.then((resp) => {
@@ -270,7 +289,18 @@ export default defineComponent({
 		...mapGetters({
 			houses: 'housesData/getAll',
 			house: 'housesData/getHouse',
+			getError: 'housesData/getError',
+			user: 'userData/getUser'
 		}),
+		canCreate() {
+			return this.user.role === 'admin' || this.user.role === 'author'
+		},
+		canEdit() {
+			return this.user.role === 'admin' || this.user.role === 'author'
+		},
+		canDelete() {
+			return this.user.role === 'admin' || this.user.role === 'author'
+		},
 		modalParams(): ModalParams {
 			return {
 				title: 'asd'
