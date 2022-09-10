@@ -1,6 +1,6 @@
 <template>
   <main class="main">
-    <DefaultHeader :user-name="userName"></DefaultHeader>
+    <DefaultHeader></DefaultHeader>
 
     <section class="content">
       <router-view></router-view>
@@ -16,7 +16,7 @@
 import { defineComponent } from "vue";
 import DefaultAsside from "../components/DefaultAsside.vue";
 import DefaultHeader from "../components/DefaultHeader.vue";
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default defineComponent({
 	name: "default-layout",
@@ -28,6 +28,14 @@ export default defineComponent({
 		...mapGetters({
 			userName: 'getUserName'
 		})
+	},
+	methods: {
+		...mapActions({
+			initUserFromStor: 'userData/initUserFromStor'
+		})
+	},
+	mounted() {
+		this.initUserFromStor()
 	}
 });
 </script>

@@ -1,3 +1,10 @@
 export type User = {
-    email: string
+    name: string
+    role: string
+}
+
+export type Users = Array<User>
+export interface UserData {
+    userName: string
+    role: string
 }

@@ -53,9 +53,6 @@ export default defineComponent({
 		}
 	},
 	methods: {
-		...mapMutations({
-			setUser: 'userData/setUser'
-		}),
 		submit() {
 			if (!this.canSubmit) return
 			this.isLoading = true
@@ -74,7 +71,6 @@ export default defineComponent({
 						throw new Error(response.message)
 					}
 					localStorage.setItem('token', response.token);
-					this.setUser({ email: response.userName })
 					this.$router.push({ name: 'main' })
 				})
 				.catch(e => {

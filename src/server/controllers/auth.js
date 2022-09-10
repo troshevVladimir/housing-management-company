@@ -8,7 +8,6 @@ const generateAccessTocken = (id, role, userName) => {
   const payload = {
     id, role, userName
   }
-
   return jwt.sign(payload, config.secret, {expiresIn: '24h'})
 }
 
@@ -21,8 +20,10 @@ class AuthController {
     }
 
     try {
-      const { email, password, role } = req.body
+      const defaultRole = 'admin'
+      const { email, password } = req.body
       const guest = await db.query(`SELECT * from users WHERE email='${email}'`)
+      const role = await getRolesId(defaultRole)
 
       if (guest.rows.length) {
         return res.status(400).json({message: 'Пользователь уже существует'})
@@ -30,32 +31,35 @@ class AuthController {
 
       const hashPassword = bcrypt.hashSync(password, 8);
 
-      const roleId = await getRolesId(role)
-
-      const newUser = await db.query(`INSERT INTO users (email, role_id, password) values ($1, $2, $3) RETURNING *`, [email, roleId, hashPassword])
-      return res.status(200).json(newUser.rows[0])
+      const newUser = await db.query(`INSERT INTO users (email, role_id, password) values ($1, $2, $3) RETURNING *`, [email, role, hashPassword])
+      const token = generateAccessTocken(newUser.rows[0].id, defaultRole, newUser.rows[0].email)
+      return res.status(200).json({token})
     } catch (error) {
       console.log(error);
       return res.status(400).json({message: 'somthing went wrong'})
     }
   }
 
-  async login (req, res) {
+  async login(req, res) {
     try {
-      const currentUser = await db.query(`SELECT * from users WHERE email='${req.body.email}'`)
+      const { email, password } = req.body
+      const currentUser = await db.query(`SELECT * from users WHERE email='${email}'`)
+      const { } = currentUser.rows[0]
 
       if (!currentUser || !currentUser.rows.length) {
         return res.status(404).json({message: 'Пользователь не найден'})
       }
 
-      const isPasworValid = bcrypt.compareSync(req.body.password, currentUser.rows[0].password);
+      const isPasworValid = bcrypt.compareSync(password, currentUser.rows[0].password);
 
       if (!isPasworValid) {
         return res.status(404).json({message: 'Пароль не верен'})
       }
 
-      const token = generateAccessTocken(currentUser.rows[0].id, await getRoleById(currentUser.rows[0].role_id, currentUser.rows[0].email))
-      return res.status(200).json({token, userName: req.body.email})
+      const role = await getRoleById(currentUser.rows[0].role_id)
+      const token = generateAccessTocken(currentUser.rows[0].id, role, currentUser.rows[0].email)
+
+      return res.status(200).json({token})
     } catch (error) {
       console.log(error);
       return res.status(400).json({message: 'somthing went wrong'})
@@ -70,21 +74,12 @@ class AuthController {
       console.log(error);
     }
   }
-
-  async getRoles (req, res) {
-    try {
-      const roles = await db.query(`SELECT * from roles`)
-      return res.status(200).json(roles.rows)
-    } catch (error) {
-      console.log(error);
-    }
-  }
 }
 
 async function getRolesId(roleName) {
   try {
     const roleId = await db.query(`SELECT * from roles WHERE value='${roleName}'`)
-    return roleId.rows[0].id || 2
+    return roleId.rows[0].id
   } catch (error) {
     console.log(error);
   }
@@ -93,6 +88,7 @@ async function getRolesId(roleName) {
 async function getRoleById(roleId) {
   try {
     const role = await db.query(`SELECT * from roles WHERE id='${roleId}'`)
+    console.log(roleId, role);
     return role.rows[0].value
   } catch (error) {
     console.log(error);

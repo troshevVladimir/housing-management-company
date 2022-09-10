@@ -20,8 +20,6 @@ export default defineComponent({
 	},
 	computed: {
 		getLayout() {
-			console.log();
-
 			if (this.routesWithEmptyLayout.includes(this.$route.path.split('/')[1])) {
 				return 'EmptyLayout'
 			}

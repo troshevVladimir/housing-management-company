@@ -78,6 +78,7 @@
       <div v-if="isLoading" class="overlay">
         <CustomLoader />
       </div>
+      <div class="error" v-if="error">{{error}}</div>
     </form>
     <router-link :to="{name: 'login'}" class="me-4">Авторизоваться</router-link>
     <router-link :to="{name: 'main'}">Перейти на главную</router-link>
@@ -95,6 +96,7 @@ export default defineComponent({
 	components: { CustomLoader },
 	data() {
 		return {
+			error: '',
 			isLoading: false,
 			errors: {
 				email: [] as ArrayErrors,
@@ -131,9 +133,6 @@ export default defineComponent({
 		}
 	},
 	methods: {
-		...mapMutations({
-			setUser: 'userData/setUser'
-		}),
 		submit() {
 			if (!this.canSubmit) return
 			this.isLoading = true
@@ -144,7 +143,11 @@ export default defineComponent({
 			})
 				.then(res => res.json())
 				.then(response => {
-					this.setUser(response)
+					if (response.message) {
+						this.error = response.message
+						throw new Error(response.message)
+					}
+					localStorage.setItem('token', response.token);
 					this.$router.push({ name: 'main' })
 				})
 				.catch(e => {

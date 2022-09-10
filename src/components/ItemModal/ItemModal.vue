@@ -10,7 +10,13 @@
       <div class="modal-content">
         <div class="modal-header">
           <h3 class="modal-title">{{params.title}}</h3>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            @click="close"
+          ></button>
         </div>
         <div class="modal-body">
           <slot></slot>
@@ -32,6 +38,11 @@ export default defineComponent({
 			required: true,
 		},
 	},
+	methods: {
+		close() {
+			this.$emit('close')
+		}
+	}
 })
 </script>
 

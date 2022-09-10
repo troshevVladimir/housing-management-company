@@ -4,4 +4,6 @@ declare module "*.vue" {
     export default Component;
 }
 
+declare module 'jsonwebtoken';
 declare module 'lodash';
+declare module 'bcrypt';

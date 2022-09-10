@@ -6,6 +6,7 @@ export const getAll = async (req, res) => {
 }
 
 export const create = async (req, res) => {
+  console.log(req.body);
   const newHouse = await db.query(`INSERT INTO houses (address, livers, tenants) values ($1, $2, $3) RETURNING *`, [req.body.address, req.body.livers, req.body.tenants])
   // req.files; - files form data
   res.status(201).json(newHouse.rows[0])

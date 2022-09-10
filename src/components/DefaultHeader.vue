@@ -38,16 +38,39 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >Users</a>
+            <ul class="dropdown-menu">
+              <li>
+                <router-link
+                  class="dropdown-item"
+                  :to="{name: 'users', params: { title: 'Users page'}}"
+                >Users</router-link>
+              </li>
+              <li>
+                <router-link
+                  class="dropdown-item"
+                  :to="{name: 'roles', params: { title: 'Roles page'}}"
+                >Roles</router-link>
+              </li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>
     <div class="header__right-header">
-      <div class="auth" v-if="!user.email">
+      <div class="auth" v-if="!user.name">
         <router-link class="me-3" :to="{name: 'login'}">Login</router-link>
         <router-link :to="{name: 'registration'}">Registration</router-link>
       </div>
       <div v-else class="user">
-        <b class="header__user-name me-3">{{user.email}}</b>
+        <b class="header__user-name me-3">{{user.name}}</b>
         <button @click="exit" type="button" class="btn btn-outline-secondary">Выйти</button>
       </div>
     </div>
@@ -55,15 +78,9 @@
 </template>
 
 <script lang="ts">
-import { mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
-	props: {
-		userName: {
-			type: String,
-			required: true
-		}
-	},
 	methods: {
 		...mapMutations({
 			clearUser: "userData/clearUser"

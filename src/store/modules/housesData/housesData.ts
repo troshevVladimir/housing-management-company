@@ -24,7 +24,7 @@ const housesData = {
                     (response) => {
                         if (response.message) {
                             ctx.commit('setError', response.message)
-                            throw new Error(response.message)
+                            console.log(response.message);
                         }
                         ctx.commit('setHouses', response)
                     }
@@ -48,6 +48,9 @@ const housesData = {
             state.houses = state.houses.filter((el: House)=> {
                 return el.id !== payload
             })
+        },
+        clear(state: any) {
+            state.error = ''
         },
         updateHouse(state: any, payload: House) {
             console.log();
