@@ -1,8 +1,8 @@
 # Запуск
-  Для запуска frnt-end части проекта в корне `yarn && yarn dev`
+  Для запуска front-end части проекта в корне `yarn && yarn dev`
   Для запуска back-end части проекта в корне `yarn && yarn server`
 
-  Запуск только frnt-end части `yarn && yarn start`
+  Запуск только front-end части `yarn && yarn start`
 
   После запуска приложения открыть `http://localhost:3000/`
 
