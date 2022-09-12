@@ -36,7 +36,7 @@ class AuthController {
       return res.status(200).json({token})
     } catch (error) {
       console.log(error);
-      return res.status(400).json({message: 'somthing went wrong'})
+      return res.status(400).json({message: 'Что-то пошло не так'})
     }
   }
 
@@ -44,7 +44,6 @@ class AuthController {
     try {
       const { email, password } = req.body
       const currentUser = await db.query(`SELECT * from users WHERE email='${email}'`)
-      const { } = currentUser.rows[0]
 
       if (!currentUser || !currentUser.rows.length) {
         return res.status(404).json({message: 'Пользователь не найден'})
@@ -62,7 +61,7 @@ class AuthController {
       return res.status(200).json({token})
     } catch (error) {
       console.log(error);
-      return res.status(400).json({message: 'somthing went wrong'})
+      return res.status(400).json({message: 'Что-то пошло не так'})
     }
   }
 
@@ -88,7 +87,6 @@ async function getRolesId(roleName) {
 async function getRoleById(roleId) {
   try {
     const role = await db.query(`SELECT * from roles WHERE id='${roleId}'`)
-    console.log(roleId, role);
     return role.rows[0].value
   } catch (error) {
     console.log(error);

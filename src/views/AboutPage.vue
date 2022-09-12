@@ -22,7 +22,8 @@ export default {
 				var placemark = new ymaps.Placemark(
 					[61.075447, 50.085236],
 					{
-						balloonContent: '<strong>Здание полу разрушено</strong>',
+						balloonContent:
+							'<strong>Здание офиса</strong><br/><span>Советская 40</span>',
 						iconContent: 'Офис',
 					},
 					{
@@ -35,9 +36,9 @@ export default {
 		},
 	},
 	computed: {
-		apiKey() {
-			return '79edb67c-16f5-4dca-8e2d-03e6aa4beebe'
-		},
+		// apiKey() {
+		// 	return '79edb67c-16f5-4dca-8e2d-03e6aa4beebe'
+		// },
 	},
 }
 </script>

@@ -62,16 +62,16 @@
             </ul>
           </li>
         </ul>
-      </div>
-    </div>
-    <div class="header__right-header">
-      <div class="auth" v-if="!user.name">
-        <router-link class="me-3" :to="{name: 'login'}">Login</router-link>
-        <router-link :to="{name: 'registration'}">Registration</router-link>
-      </div>
-      <div v-else class="user">
-        <b class="header__user-name me-3">{{user.name}}</b>
-        <button @click="exit" type="button" class="btn btn-outline-secondary">Выйти</button>
+        <div class="header__right-header">
+          <div class="auth" v-if="!user.name">
+            <router-link class="me-3" :to="{name: 'login'}">Login</router-link>
+            <router-link :to="{name: 'registration'}">Registration</router-link>
+          </div>
+          <div v-else class="user">
+            <b class="header__user-name me-3">{{user.name}}</b>
+            <button @click="exit" type="button" class="btn btn-outline-secondary">Выйти</button>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -83,11 +83,13 @@ import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
 	methods: {
 		...mapMutations({
-			clearUser: "userData/clearUser"
+			clearUser: "userData/clearUser",
+			clearHouses: "housesData/clear"
 		}),
 		exit() {
 			localStorage.removeItem('token')
 			this.clearUser()
+			this.clearHouses()
 			this.$router.push({ name: 'login' })
 		}
 
@@ -102,10 +104,26 @@ export default {
 
 <style lang="scss">
 	.header {
-		padding-right: 40px;
+		&__right-header {
+			background-color: #fff;
+			padding-bottom: 20px;
+		}
+
+		@media screen and (min-width: 992px) {
+			padding-right: 40px;
+
+			&__right-header {
+				padding-bottom: 0;
+			}
+		}
 	}
 	.user {
 		display: flex;
 		align-items: center;
+	}
+
+	.navbar-nav {
+		background-color: #fff;
+		width: 100%;
 	}
 </style>

@@ -5,10 +5,13 @@
     <span v-html="getError"></span>
 
     <div class="table-responsive">
-      <table class="houses-page__table table align-middle table-dark table-striped table-hover">
+      <table
+        v-if="!getError"
+        class="houses-page__table table align-middle table-dark table-striped table-hover"
+      >
         <thead>
           <tr>
-            <th scope="col">№</th>
+            <th scope="col" class="houses-page__nums-col">№</th>
             <th scope="col">Address</th>
             <th scope="col">Tenants</th>
             <th scope="col">Livers</th>
@@ -17,11 +20,11 @@
         </thead>
         <tbody>
           <tr v-for="(house, idx) in houses" :key="house.id">
-            <th scope="row">{{idx + 1 }}</th>
-            <td>{{house.address}}</td>
+            <th scope="row" class="houses-page__nums-col">{{idx + 1 }}</th>
+            <td scope="row">{{house.address}}</td>
             <td>{{house.tenants}}</td>
             <td>{{house.livers}}</td>
-            <td class="houses-page__actions-col" v-if="canDelete || canEdit">
+            <td width="20px" v-if="canDelete || canEdit">
               <button
                 type="button"
                 class="btn btn-danger me-2"
@@ -39,7 +42,7 @@
         </tbody>
       </table>
     </div>
-    <item-modal :params="modalParams" v-if="modalShow && canCreate">
+    <item-modal :params="modalProps" v-if="modalShow && canCreate" @close="closeModal">
       <form class="validated-form mb-5">
         <div class="mb-3 validated-form__field" v-for="field in formFields" :key="field.name">
           <label :for="field.name" class="form-label">{{field.label}}</label>
@@ -50,16 +53,14 @@
             :id="field.name"
             v-model="field.value"
           />
-          <div class="validated-form__invalid-text" v-if="false">{{field.invalidText}}</div>
         </div>
+        <div class="houses-page__error" v-if="!valid">Форма заполнена не верно</div>
       </form>
       <button class="btn btn-primary me-2" @click="closeModal">Close</button>
-      <button class="btn btn-success" @click="submit(mdalParams.id)">Submit</button>
+      <button class="btn btn-success" @click="submit(modalParams.id)">Submit</button>
     </item-modal>
 
     <custom-loader v-if="loading"></custom-loader>
-
-    <div class="houses-page__error" v-if="!valid">Форма заполнена не верно</div>
 
     <button
       v-if="canCreate"
@@ -73,7 +74,7 @@
 <script lang='ts'>
 import { defineComponent } from 'vue'
 import ItemModal from '@/components/ItemModal/ItemModal.vue'
-import { ModalParams } from '@/components/ItemModal/types'
+import { ModalProps } from '@/components/ItemModal/types'
 import CustomLoader from '@/components/CustomLoader.vue'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import * as _ from 'lodash'
@@ -86,20 +87,20 @@ interface FormField {
 	type: string
 	value: string
 	required: boolean
-	invalidText: string
 }
 
-interface MdalParams {
+interface ModalParams {
 	id: ID
 	method: string
 }
 
 interface State {
+	text: {}
 	loading: boolean
 	modalShow: boolean
 	fromData: null
 	valid: boolean
-	mdalParams: MdalParams
+	modalParams: ModalParams
 	formFields: Array<FormField>,
 }
 
@@ -111,11 +112,15 @@ export default defineComponent({
 	},
 	data(): State {
 		return {
+			text: {
+				update: 'Обновление дома',
+				create: 'Создание нового дома'
+			},
 			loading: false,
 			modalShow: false,
 			fromData: null,
 			valid: true,
-			mdalParams: {
+			modalParams: {
 				id: '',
 				method: '',
 			},
@@ -126,7 +131,6 @@ export default defineComponent({
 					type: 'text',
 					value: '',
 					required: true,
-					invalidText: 'Неправильно заполнено поле',
 				},
 				{
 					name: 'tenants',
@@ -134,7 +138,6 @@ export default defineComponent({
 					type: 'number',
 					value: '',
 					required: true,
-					invalidText: 'Неправильно заполнено поле',
 				},
 				{
 					name: 'livers',
@@ -142,7 +145,6 @@ export default defineComponent({
 					type: 'number',
 					value: '',
 					required: true,
-					invalidText: 'Неправильно заполнено поле',
 				},
 			],
 		}
@@ -211,7 +213,8 @@ export default defineComponent({
 				})
 		},
 		prepareForUpdate(id: ID) {
-			this.mdalParams.id = id
+			this.modalParams.id = id
+			this.modalProps.title = 'Обновление'
 			this.showModal('put')
 			const houseSelectedData = this.house(id)
 			this.formFields.forEach((el: FormField) => {
@@ -247,9 +250,9 @@ export default defineComponent({
 				this.loading = true
 				this.formDataInit()
 
-				if (this.mdalParams.method === 'put') {
+				if (this.modalParams.method === 'put') {
 					this.debounsedUpdate(id, this.formData)
-				} else if (this.mdalParams.method === 'post') {
+				} else if (this.modalParams.method === 'post') {
 					this.debounsedSend(this.formData)
 				}
 
@@ -268,7 +271,14 @@ export default defineComponent({
 			return formData
 		},
 		showModal(method: string): void {
-			this.mdalParams.method = method
+			this.modalParams.method = method
+
+			if (this.modalParams.method === 'put') {
+				this.modalProps.title = this.text.update
+			} else if (this.modalParams.method === 'post') {
+				this.modalProps.title = this.text.create
+			}
+
 			this.modalShow = true
 		},
 		closeModal(): void {
@@ -293,17 +303,17 @@ export default defineComponent({
 			user: 'userData/getUser'
 		}),
 		canCreate() {
-			return this.user.role === 'admin' || this.user.role === 'author'
+			return this.user.role === 'admin' || this.user.role === 'author' && localStorage.getItem('token')
 		},
 		canEdit() {
-			return this.user.role === 'admin' || this.user.role === 'author'
+			return this.user.role === 'admin' || this.user.role === 'author' && localStorage.getItem('token')
 		},
 		canDelete() {
-			return this.user.role === 'admin' || this.user.role === 'author'
+			return this.user.role === 'admin' || this.user.role === 'author' && localStorage.getItem('token')
 		},
-		modalParams(): ModalParams {
+		modalProps(): ModalProps {
 			return {
-				title: 'asd'
+				title: ''
 			}
 		}
 	},
@@ -318,17 +328,26 @@ export default defineComponent({
 
 <style lang='scss'>
 	.houses-page {
+		&__table {
+			width: 100%;
+			table-layout: fixed;
+		}
+		td {
+			max-width: 30%;
+		}
+
 		&__page-title {
 			margin-bottom: 40px;
 		}
+
 		&__error {
 			font-weight: 600;
 			font-size: 20px;
-			color: red;
+			color: rgb(124, 67, 67);
 		}
 
-		&__actions-col {
-			max-width: 30px;
+		& &__nums-col {
+			width: 30px;
 		}
 	}
 </style>

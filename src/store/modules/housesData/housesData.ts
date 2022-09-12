@@ -24,7 +24,6 @@ const housesData = {
                     (response) => {
                         if (response.message) {
                             ctx.commit('setError', response.message)
-                            console.log(response.message);
                         }
                         ctx.commit('setHouses', response)
                     }
@@ -51,9 +50,9 @@ const housesData = {
         },
         clear(state: any) {
             state.error = ''
+            state.houses = []
         },
         updateHouse(state: any, payload: House) {
-            console.log();
             const id = state.houses.findIndex((el: House) => el.id === payload.id)
             state.houses.splice(id, 1 , payload)
         }

@@ -1,4 +1,4 @@
 
-export interface ModalParams {
+export interface ModalProps {
 	title: string
 }

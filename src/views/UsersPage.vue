@@ -2,7 +2,9 @@
   <div class="houses-page">
     <h1 class="houses-page__page-title">{{$route.params.title}}</h1>
 
-    <div class="table-responsive">
+    <span v-html="getError"></span>
+
+    <div class="table-responsive" v-if="!getError">
       <router-view name="table"></router-view>
     </div>
 
@@ -14,8 +16,8 @@
 import { defineComponent } from 'vue'
 import CustomLoader from '@/components/CustomLoader.vue'
 import ItemModal from '@/components/ItemModal'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
 import * as _ from 'lodash'
+import { mapGetters } from 'vuex'
 
 interface State {
 	loading: boolean
@@ -38,6 +40,9 @@ export default defineComponent({
 		}
 	},
 	computed: {
+		...mapGetters({
+			getError: 'userData/getError',
+		}),
 		canEdit() {
 			return this.user.role === 'admin' || this.user.role === 'author'
 		},
@@ -50,11 +55,6 @@ export default defineComponent({
 	.houses-page {
 		&__page-title {
 			margin-bottom: 40px;
-		}
-		&__error {
-			font-weight: 600;
-			font-size: 20px;
-			color: red;
 		}
 
 		&__actions-col {

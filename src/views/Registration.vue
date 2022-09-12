@@ -87,7 +87,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import CustomLoader from "@/components/CustomLoader.vue";
-import { mapMutations } from "vuex";
 
 type ArrayErrors = Array<string>
 
@@ -122,7 +121,6 @@ export default defineComponent({
 		},
 		isAllValid() {
 			let valid = true
-
 			Object.keys(this.errors).forEach(key => {
 				if (this.errors[key].length) {
 					valid = false
@@ -172,6 +170,8 @@ export default defineComponent({
 			if (!isCorrectPassword && !passwordErrors.includes('formatError')) {
 				passwordErrors.push('formatError')
 			}
+
+			this.canSubmit = this.isAllValid
 		},
 		validatePassword() {
 			const password = this.formData.password
@@ -184,9 +184,12 @@ export default defineComponent({
 			}
 
 			const isCorrectPassword = password.length > 5 && password.length < 40
+
 			if (!isCorrectPassword && !passwordErrors.includes('formatError')) {
 				passwordErrors.push('formatError')
 			}
+
+			this.canSubmit = this.isAllValid
 		},
 		validateEmail() {
 			const email = this.formData.email
@@ -205,6 +208,8 @@ export default defineComponent({
 			if (!isCorrectEmail && !emailErrors.includes('formatError')) {
 				emailErrors.push('formatError')
 			}
+
+			this.canSubmit = this.isAllValid
 		},
 		registration() {
 			this.validateEmail()

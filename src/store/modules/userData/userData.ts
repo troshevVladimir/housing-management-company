@@ -5,6 +5,7 @@ import jwt_decode from "jwt-decode";
 const userData = {
     state: () => {
         return {
+            error: null,
             user: {
                 name: '',
                 role: ''
@@ -52,7 +53,10 @@ const userData = {
 				.then((resp) => {
 					return resp.json()
 				})
-				.then((response) => {
+                .then((response) => {
+                    if (response.message) {
+                        ctx.commit('setError', response.message)
+                    }
 					ctx.commit('setUserRoles', response)
 				})
 				.catch((e) => {
@@ -64,6 +68,9 @@ const userData = {
         }
     },
     mutations: {
+        setError(state: any, payload: string) {
+            state.error = payload
+        },
         setUser(state: any, payload: UserData) {
             state.user.name = payload.userName
             state.user.role = payload.role
@@ -76,9 +83,15 @@ const userData = {
         },
         clearUser(state: any) {
             state.user = {}
-        }
+            state.error = ''
+            state.users = [] as Users
+            state.userRoles = []
+        },
     },
     getters: {
+        getError(state: any) {
+            return state.error
+        },
         getUser(state: any) {
             return state.user
         },

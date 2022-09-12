@@ -56,7 +56,7 @@ export default defineComponent({
 
 		.header {
 			grid-area: header;
-			padding-right: 20px;
+			z-index: 10;
 		}
 
 		.sidebar {

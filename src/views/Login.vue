@@ -36,7 +36,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import CustomLoader from "@/components/CustomLoader.vue";
-import { mapMutations } from "vuex";
 
 export default defineComponent({
 	name: "login",

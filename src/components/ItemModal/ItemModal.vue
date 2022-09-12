@@ -28,13 +28,13 @@
 
 <script lang='ts'>
 import { defineComponent, PropType } from 'vue';
-import { ModalParams } from './types'
+import { ModalProps } from './types'
 
 export default defineComponent({
 	name: 'item-modal',
 	props: {
 		params: {
-			type: Object as PropType<ModalParams>,
+			type: Object as PropType<ModalProps>,
 			required: true,
 		},
 	},
