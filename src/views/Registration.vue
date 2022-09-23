@@ -147,7 +147,8 @@ export default defineComponent({
 						this.error = response.message
 						throw new Error(response.message)
 					}
-					localStorage.setItem('token', response.token);
+					localStorage.setItem('token', response.accessToken);
+					localStorage.setItem('refreshToken', response.refreshToken);
 					this.$router.push({ name: 'main' })
 				})
 				.catch(e => {

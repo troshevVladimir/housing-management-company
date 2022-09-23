@@ -25,5 +25,5 @@ app.use('/__open-in-editor', launchMiddleware())
 app.use(express.static(path.resolve(__dirname, '../../public/')))
 
 app.listen(3000, () => {
-    console.log('listen...');
+    console.log('listen... http://localhost:3000/');
 })

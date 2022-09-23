@@ -4,11 +4,16 @@ import { validationResult } from 'express-validator'
 import jwt from 'jsonwebtoken'
 import config from './../config.js'
 
-const generateAccessTocken = (id, role, userName) => {
+async function generateTokens (id, role, userName) {
   const payload = {
     id, role, userName
   }
-  return jwt.sign(payload, config.secret, {expiresIn: '24h'})
+  const accessToken = jwt.sign(payload, config.secret, { expiresIn: '10s' })
+  const refreshToken = jwt.sign(payload, config.secretRefresh, { expiresIn: '24h' })
+
+  await db.query(`UPDATE users SET refresh_token='${refreshToken}' WHERE id='${id}'`)
+
+  return { accessToken, refreshToken }
 }
 
 class AuthController {
@@ -32,8 +37,8 @@ class AuthController {
       const hashPassword = bcrypt.hashSync(password, 8);
 
       const newUser = await db.query(`INSERT INTO users (email, role_id, password) values ($1, $2, $3) RETURNING *`, [email, role, hashPassword])
-      const token = generateAccessTocken(newUser.rows[0].id, defaultRole, newUser.rows[0].email)
-      return res.status(200).json({token})
+      const tokens = await generateTokens(newUser.rows[0].id, defaultRole, newUser.rows[0].email)
+      return res.status(200).json(tokens)
     } catch (error) {
       console.log(error);
       return res.status(400).json({message: 'somthing went wrong'})
@@ -44,7 +49,6 @@ class AuthController {
     try {
       const { email, password } = req.body
       const currentUser = await db.query(`SELECT * from users WHERE email='${email}'`)
-      const { } = currentUser.rows[0]
 
       if (!currentUser || !currentUser.rows.length) {
         return res.status(404).json({message: 'Пользователь не найден'})
@@ -57,9 +61,20 @@ class AuthController {
       }
 
       const role = await getRoleById(currentUser.rows[0].role_id)
-      const token = generateAccessTocken(currentUser.rows[0].id, role, currentUser.rows[0].email)
+      const tokens = await generateTokens(currentUser.rows[0].id, role, currentUser.rows[0].email)
 
-      return res.status(200).json({token})
+      return res.status(200).json(tokens)
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({message: 'somthing went wrong'})
+    }
+  }
+
+  async logout (req, res) {
+    try {
+      await db.query(`UPDATE users SET refresh_token='' WHERE id=${req.id} RETURNING *;`)
+
+      return res.send("Logout successful");
     } catch (error) {
       console.log(error);
       return res.status(400).json({message: 'somthing went wrong'})
@@ -73,6 +88,32 @@ class AuthController {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async tokenRefresh(req, res) {
+    const { refreshToken, email } = req.body;
+
+    if (!refreshToken) {
+      return res.sendStatus(401);
+    }
+
+    const user = await db.query(`SELECT * from users WHERE email='${email}' RETURNING *;`)
+
+    if (!user || !user.refresh_token) {
+      return res.sendStatus(401);
+    }
+
+    jwt.verify(refreshToken, config.secretRefresh, (err, user) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+
+      const accessToken = jwt.sign({ username: user.username, role: user.role }, accessTokenSecret, { expiresIn: '20m' });
+
+      res.json({
+        accessToken
+      })
+    })
   }
 }
 
@@ -88,7 +129,6 @@ async function getRolesId(roleName) {
 async function getRoleById(roleId) {
   try {
     const role = await db.query(`SELECT * from roles WHERE id='${roleId}'`)
-    console.log(roleId, role);
     return role.rows[0].value
   } catch (error) {
     console.log(error);

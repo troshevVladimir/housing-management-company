@@ -86,11 +86,17 @@ export default {
 			clearUser: "userData/clearUser"
 		}),
 		exit() {
-			localStorage.removeItem('token')
-			this.clearUser()
-			this.$router.push({ name: 'login' })
+			localStorage.removeItem('refreshToken')
+			localStorage.removeItem('accessToken')
+      this.clearUser()
+      fetch('/api/auth/logout', {
+        method: 'POST'
+      })
+        .then(() => {
+          console.log('logout');
+          this.$router.push({ name: 'login' })
+        })
 		}
-
 	},
 	computed: {
 		...mapGetters({
