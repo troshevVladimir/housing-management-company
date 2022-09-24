@@ -3,29 +3,35 @@ import { fileURLToPath } from 'url';
 import webpack from 'webpack'
 // const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import TerserPlugin from 'terser-webpack-plugin'
-import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import {VueLoaderPlugin} from 'vue-loader'
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const isDev = false;
 
 export default {
-  devtool: false,
-  entry: {
-    main: "./src/index.ts",
-  },
-  mode: "production",
-  output: {
-    path: path.join(__dirname, "..", "public"),
-    filename: "js/[name].bundle.[fullhash].js",
-    chunkFilename: "chunks/[name].chunk.[fullhash].js",
-    publicPath: "/"
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+    },
+    // minimizer: [
+    //   new TerserJsPlugin({
+    //     terserOptions: { ... },
+    //     cache: true
+    //   })
+    // ]
   },
   module: {
     rules: [
+      // {
+      //   loader: 'cache-loader',
+      //   options: {
+      //     cacheDirectory: path.resolve(
+      //       __dirname,
+      //       'node_modules/.cache/cache-loader'
+      //     ),
+      //   },
+      // },
       {
         test: /\.tsx?$/,
         loader: "ts-loader",
@@ -39,12 +45,25 @@ export default {
         exclude: (file) => {
           // always transpile js in vue files
           if (/\.vue\.jsx?$/.test(file)) {
-            return false
+            return false;
           }
           // Don't transpile node_modules
-          return /node_modules/.test(file)
+          return /node_modules/.test(file);
         },
-        use: ['thread-loader', 'babel-loader'],
+        use: ["thread-loader", "babel-loader"],
+      },
+      {
+        test: /\.vue$/,
+        // {
+        //   loader: 'cache-loader',
+        //   options: {
+        //     cacheDirectory: path.resolve(
+        //       __dirname,
+        //       'node_modules/.cache/cache-loader' // то где храниться кэш, при изменении в конфиге сборки надо удалять можно испольховать nodemon для автоматизациимть
+        //     ),
+        //   },
+        // },
+        use: "vue-loader",
       },
       {
         test: /\.(jpg|jpeg|png|gif|svg|pdf|ico)$/,
@@ -52,14 +71,10 @@ export default {
           {
             loader: "file-loader",
             options: {
-              name: "[path][name]-[fullhash:8].[ext]"
-            }
-          }
-        ]
-      },
-      {
-        test: /\.vue$/,
-        use: "vue-loader",
+              name: "[path][name]-[fullhash:8].[ext]",
+            },
+          },
+        ],
       },
       {
         test: /\.css$/i,
@@ -70,15 +85,23 @@ export default {
         use: [
           // {
           //   loader: MiniCssExtractPlugin.loader,
-          //   options: {
-          //   }
+          //   options: {},
           // },
           'vue-style-loader',
+          // {
+          //   loader: 'cache-loader',
+          //   options: {
+          //     cacheDirectory: path.resolve(
+          //       __dirname,
+          //       'node_modules/.cache/cache-loader'
+          //     ),
+          //   },
+          // },
           {
             loader: "css-loader",
             options: {
-              sourceMap: isDev
-            }
+              sourceMap: isDev,
+            },
           },
           {
             loader: "postcss-loader",
@@ -86,10 +109,10 @@ export default {
           {
             loader: "sass-loader",
             options: {
-              sourceMap: isDev
-            }
-          }
-        ]
+              sourceMap: isDev,
+            },
+          },
+        ],
       },
       {
         test: /\.svg$/,
@@ -98,89 +121,59 @@ export default {
             loader: "svg-inline-loader",
             options: {
               limit: 10 * 1024,
-              noquotes: true
-            }
+              noquotes: true,
+            },
           },
           {
             loader: "url-loader",
             options: {
-              limit: 10 * 1024
-            }
+              limit: 10 * 1024,
+            },
           },
           {
             loader: "file-loader",
             options: {
               name: "[path][name].[ext]",
               outputPath: "images/",
-              emitFile: false
-            }
-          }
-        ]
+              emitFile: false,
+            },
+          },
+        ],
       },
-    ]
+    ],
   },
   optimization: {
-    runtimeChunk: false,
     splitChunks: {
-      cacheGroups: {
-        default: false,
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendor_app",
-          chunks: "all",
-          minChunks: 2
-        }
-      }
+      chunks: "all",
     },
-    minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          output: {
-            comments: false
-          },
-          compress: {
-            passes: 3,
-            pure_getters: true,
-            unsafe: true
-          },
-          ecma: undefined,
-          warnings: false,
-          parse: {
-            html5_comments: false
-          },
-          mangle: true,
-          module: false,
-          toplevel: false,
-          nameCache: null,
-          ie8: false,
-          keep_classnames: false,
-          keep_fnames: false,
-          safari10: false
-        }
-      }),
-      new CssMinimizerPlugin(),
-    ]
+    // minimizer: [
+    //   new TerserJsPlugin({
+    //     terserOptions: { ... },
+    //     cache: true
+    //   })
+    // ]
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
+      // "process.env.NODE_ENV": JSON.stringify("development"),
+      __VUE_OPTIONS_API__: true,
+      __VUE_PROD_DEVTOOLS__: true,
     }),
-    // new HardSourceWebpackPlugin()
     new HtmlWebpackPlugin({
       filename: "index.html",
       template: path.join(__dirname, "..", "index.html"),
       inject: true,
-      minify: true
     }),
+    // new HardSourceWebpackPlugin() // альтернатива cache-loader
     // new MiniCssExtractPlugin({
     //   filename: "css/[name].bundle.[fullhash].css",
-    //   chunkFilename: "chunks/[id].chunk.[fullhash].css"
+    //   chunkFilename: "chunks/[id].chunk.[fullhash].css",
     // }),
     new VueLoaderPlugin(),
   ],
   stats: {
     children: true,
-    errorDetails: true
+    errorDetails: true,
   },
   resolve: {
     extensions: [".tsx", ".ts", ".vue", ".jsx", ".js", ".json"],
