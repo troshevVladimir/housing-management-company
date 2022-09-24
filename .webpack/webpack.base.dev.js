@@ -10,17 +10,6 @@ const __dirname = path.dirname(__filename);
 const isDev = false;
 
 export default {
-  optimization: {
-    splitChunks: {
-      chunks: "all",
-    },
-    // minimizer: [
-    //   new TerserJsPlugin({
-    //     terserOptions: { ... },
-    //     cache: true
-    //   })
-    // ]
-  },
   module: {
     rules: [
       // {
@@ -141,17 +130,6 @@ export default {
         ],
       },
     ],
-  },
-  optimization: {
-    splitChunks: {
-      chunks: "all",
-    },
-    // minimizer: [
-    //   new TerserJsPlugin({
-    //     terserOptions: { ... },
-    //     cache: true
-    //   })
-    // ]
   },
   plugins: [
     new webpack.DefinePlugin({

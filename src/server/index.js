@@ -2,28 +2,50 @@ import express from "express"
 import formData from 'express-form-data'
 import router from './router.js'
 import path from "path"
+import fs from "fs"
 import { fileURLToPath } from 'url';
 import launchMiddleware from 'launch-editor-middleware'
-
+import { renderToString } from 'vue/server-renderer'
+import { createSSRApp } from "vue";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const app = express()
+const pathToMainJs = JSON.parse(fs.readFileSync('./public/ssr-manifest.json'))['main.js'];
+const appPath = path.resolve(__dirname, '../../public/', pathToMainJs)
+const vueApp = fs.readFileSync(appPath)
+const server = express()
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-app.use(formData.parse());
+server.use(express.json())
+server.use(express.urlencoded({ extended: false }))
+server.use(formData.parse());
+server.use(router)
+server.use('/__open-in-editor', launchMiddleware())
 
-app.use(router)
+server.get('*', async (req, res) => {
+    const compiledApp = createSSRApp(vueApp)
+    const appString = await renderToString(compiledApp)
+    console.log(appString);
+    const html = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <script src="https://api-maps.yandex.ru/2.1/?apikey=Your API key&lang=en_US" type="text/javascript"></script>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title></title>
+        </head>
 
-app.use('/__open-in-editor', launchMiddleware())
+        <body>
+            ${appString}
+        </body>
+        </html>
+    `
 
-// app.get('/', (req, res) => {
-//     res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'))
-// })
+    res.end(html)
+})
 
-app.use(express.static(path.resolve(__dirname, '../../public/')))
+// server.use(express.static(path.resolve(__dirname, '../../public/')))
 
-app.listen(3000, () => {
+server.listen(3000, () => {
     console.log('listen...');
 })
