@@ -3,21 +3,21 @@ import { fileURLToPath } from 'url';
 import baseConf from './webpack.base.dev.js'
 import { merge } from 'webpack-merge'
 
+const nodeExternals = require('webpack-node-externals');
+const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default merge(baseConf, {
-  devtool: "inline-source-map",
-  entry: {
-    main: "./src/index.ts",
-  },
+  devtool: 'source-map',
+  entry: './src/entry-server.js',
   mode: "development",
-  watch: true,
   output: {
-    path: path.join(__dirname, "..", "public"),
-    filename: "js/[name].bundle.[fullhash].js",
-    chunkFilename: "chunks/[name].chunk.[fullhash].js",
-    clean: true,
+    libraryTarget: 'commonjs2'
   },
-  target: "web",
+  target: "node",
+  plugins: [
+    new VueSSRServerPlugin()
+  ]
 });

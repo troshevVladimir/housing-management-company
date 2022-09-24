@@ -8,15 +8,16 @@ const __dirname = path.dirname(__filename);
 
 export default merge(baseConf, {
   devtool: "inline-source-map",
-  entry: {
-    main: "./src/index.ts",
-  },
+  entry: "./src/entry-client.js",
   mode: "development",
   watch: true,
   output: {
+    // filename: "js/[name].bundle.[fullhash].js",
+    // chunkFilename: "chunks/[name].chunk.[fullhash].js",
+    filename: '[name].js',
+    sourceMapFilename: '[name].js.map',
     path: path.join(__dirname, "..", "public"),
-    filename: "js/[name].bundle.[fullhash].js",
-    chunkFilename: "chunks/[name].chunk.[fullhash].js",
+    publicPath: '/dist/',
     clean: true,
   },
   target: "web",
