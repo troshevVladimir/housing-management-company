@@ -36,6 +36,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import CustomLoader from "@/components/CustomLoader.vue";
+import { mapMutations } from "vuex";
 
 export default defineComponent({
 	name: "login",
@@ -52,6 +53,7 @@ export default defineComponent({
 		}
 	},
 	methods: {
+		...mapMutations({clearUser: "userData/clearUser"}),
 		submit() {
 			if (!this.canSubmit) return
 			this.isLoading = true
@@ -70,6 +72,8 @@ export default defineComponent({
 						throw new Error(response.message)
 					}
 					localStorage.setItem('token', response.token);
+					this.clearUser() // TODO: При выходе и входе приходится очищать поля
+
 					this.$router.push({ name: 'main' })
 				})
 				.catch(e => {

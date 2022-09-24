@@ -89,7 +89,7 @@ export default defineComponent({
 			}
 		}
 	},
-	mounted() {
+	created () {
 		this.getRoles()
 		this.loading = true
 		this.getUsers()

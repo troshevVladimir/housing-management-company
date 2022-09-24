@@ -1,7 +1,5 @@
 <template>
   <div class="houses-page">
-    <h1 class="houses-page__page-title">{{$route.params.title}}</h1>
-
     <span v-html="getError"></span>
 
     <div class="table-responsive">

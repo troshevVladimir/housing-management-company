@@ -64,7 +64,7 @@ export default defineComponent({
 			roles: 'userData/getUserRoles',
 		}),
 	},
-	mounted() {
+	created () {
 		this.loading = true
 		this.getRoles()
 			.then(() => {

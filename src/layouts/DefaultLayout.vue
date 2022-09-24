@@ -3,6 +3,7 @@
     <DefaultHeader></DefaultHeader>
 
     <section class="content">
+			<h1 class="houses-page__page-title">{{$route.meta.title}}</h1>
       <router-view></router-view>
     </section>
 

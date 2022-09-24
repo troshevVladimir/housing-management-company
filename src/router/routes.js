@@ -8,9 +8,9 @@ import Login from "@/views/Login.vue";
 import Registration from "@/views/Registration.vue";
 
 const routes = [
-  { path: "/", name: 'main', component: MainPage },
-  { path: "/about", name:'about', component: AboutPage },
-  { path: "/houses", name: 'houses', component: HousesPage },
+  { path: "/", name: 'main', component: MainPage},
+  { path: "/about", name:'about', component: AboutPage, meta: { title: 'О нас' }},
+  { path: "/houses", name: 'houses', component: HousesPage, meta: { title: 'Все дома' } },
   {
     path: "/users",
     component: UsersPage,
@@ -20,14 +20,16 @@ const routes = [
         name: 'users',
         components: {
           table: UsersTable
-        }
+        },
+        meta: { title: 'Все Пользователи' }
       },
       {
         path: 'roles',
         name: 'roles',
         components: {
           table: RolesTable
-        }
+        },
+        meta: { title: 'Роли пользователей' }
       }
     ]
   },

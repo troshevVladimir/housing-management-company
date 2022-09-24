@@ -1,6 +1,4 @@
 import db from './../db/db.js'
-import jwt from 'jsonwebtoken'
-import config from './../config.js'
 
 
 class UsersConroller {
@@ -38,14 +36,6 @@ class UsersConroller {
     } catch (error) {
       console.log(error);
     }
-  }
-}
-
-async function getRoleById(roleId) {
-  try {
-
-  } catch (error) {
-    console.log(error);
   }
 }
 

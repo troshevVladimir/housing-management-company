@@ -23,10 +23,13 @@ const userData = {
             ctx.commit('setUser', decoded)
         },
         getUsers(ctx: any) {
+            const token = localStorage.getItem('token')
+            const auth = token ? 'Bearer ' + token : ''
+
             return fetch(`/api/getusers/`, {
 				method: 'GET',
 				headers: {
-					'Authorization': 'Bearer ' + localStorage.getItem('token'),
+					'Authorization': auth,
 				},
 			})
 				.then((resp) => {
@@ -44,10 +47,12 @@ const userData = {
 				})
         },
         getRoles(ctx: any) {
+            const token = localStorage.getItem('token')
+            const auth = token ? 'Bearer ' + token : ''
             return fetch(`/api/getusers/getUserRoles`, {
 				method: 'GET',
 				headers: {
-					'Authorization': 'Bearer ' + localStorage.getItem('token'),
+					'Authorization': auth,
 				},
 			})
 				.then((resp) => {
