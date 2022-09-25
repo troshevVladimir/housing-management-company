@@ -45,9 +45,6 @@ const userData = {
 				.catch((e) => {
 					console.error(e)
 				})
-				.finally(() => {
-					this.loading = false
-				})
         },
         getRoles(ctx: any) {
             const token = localStorage.getItem('token')
@@ -69,9 +66,6 @@ const userData = {
 				})
 				.catch((e) => {
 					console.error(e)
-				})
-				.finally(() => {
-					this.loading = false
 				})
         }
     },

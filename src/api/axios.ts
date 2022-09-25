@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const axiosClient = axios.create();
 
-axiosClient.defaults.baseURL = 'http://localhost:3000/api/';
+axiosClient.defaults.baseURL = 'http://localhost:3000/api';
 
 if (localStorage.getItem('token')) {
   axiosClient.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
@@ -14,9 +14,15 @@ axiosClient.interceptors.request.use(function (response) {
   return response;
 }, function (error) {
   if (error.response.status === 401) {
-      console.log('need to refresh token');
+    console.log('need to refresh token');
 
-      // axiosClient.get()
+    // const config = {
+    //   params: {
+    //     email: 'asdasd@gmail.com'
+    //   },
+    // }
+
+      // axiosClient.get('/api/auth/token/', config)
     }
 
     return Promise.reject(error);

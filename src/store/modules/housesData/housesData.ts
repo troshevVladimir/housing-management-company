@@ -24,13 +24,9 @@ const housesData = {
                     return res.json()
                 })
                 .then(refreshRes => {
-                    if (refreshRes.status) return refreshRes
-
                     return refreshRes.json()
                 })
                 .then(refreshResponse => {
-                    if (refreshResponse.status) return refreshResponse
-
                     ctx.commit('clear')
                     localStorage.setItem('token', refreshResponse.token)
 
