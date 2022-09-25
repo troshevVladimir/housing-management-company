@@ -1,11 +1,11 @@
-import MainPage from "@/views/MainPage.vue";
-import AboutPage from "@/views/AboutPage.vue";
-import HousesPage from "@/views/HousesPage.vue";
-import UsersPage from "@/views/UsersPage.vue";
-import RolesTable from "@/components/RolesTable";
-import UsersTable from "@/components/UsersTable";
-import Login from "@/views/Login.vue";
-import Registration from "@/views/Registration.vue";
+const MainPage = () => import('@/views/MainPage.vue')
+const AboutPage = () => import('@/views/AboutPage.vue')
+const HousesPage = () => import('@/views/HousesPage.vue')
+const UsersPage = () => import('@/views/UsersPage.vue')
+const RolesTable = () => import('@/components/RolesTable.vue')
+const UsersTable = () => import('@/components/UsersTable.vue')
+const Registration = () => import('@/views/Registration.vue')
+const Login = () => import('@/views/Login.vue')
 
 const routes = [
   { path: "/", name: 'main', component: MainPage},

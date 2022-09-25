@@ -122,6 +122,7 @@ export default {
   },
   optimization: {
     runtimeChunk: false,
+    minimize: true,
     splitChunks: {
       cacheGroups: {
         default: false,

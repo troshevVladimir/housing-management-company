@@ -3,7 +3,8 @@ import { fileURLToPath } from 'url';
 import webpack from 'webpack'
 // const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import {VueLoaderPlugin} from 'vue-loader'
+import { VueLoaderPlugin } from 'vue-loader'
+import TerserJsPlugin from 'terser-webpack-plugin'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,46 +26,30 @@ export default {
   target: "web",
   module: {
     rules: [
-      // {
-      //   loader: 'cache-loader',
-      //   options: {
-      //     cacheDirectory: path.resolve(
-      //       __dirname,
-      //       'node_modules/.cache/cache-loader'
-      //     ),
-      //   },
-      // },
       {
         test: /\.tsx?$/,
-        loader: "ts-loader",
-        options: {
-          appendTsSuffixTo: [/\.vue$/],
-        },
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              appendTsSuffixTo: [/\.vue$/],
+            },
+          }
+        ],
         exclude: /node_modules/,
       },
       {
         test: /\.m?jsx?$/,
         exclude: (file) => {
-          // always transpile js in vue files
           if (/\.vue\.jsx?$/.test(file)) {
             return false;
           }
-          // Don't transpile node_modules
           return /node_modules/.test(file);
         },
-        use: ["thread-loader", "babel-loader"],
+        use: ['cache-loader', 'thread-loader', 'babel-loader'],
       },
       {
         test: /\.vue$/,
-        // {
-        //   loader: 'cache-loader',
-        //   options: {
-        //     cacheDirectory: path.resolve(
-        //       __dirname,
-        //       'node_modules/.cache/cache-loader' // то где храниться кэш, при изменении в конфиге сборки надо удалять можно испольховать nodemon для автоматизациимть
-        //     ),
-        //   },
-        // },
         use: "vue-loader",
       },
       {
@@ -90,15 +75,6 @@ export default {
           //   options: {},
           // },
           'vue-style-loader',
-          // {
-          //   loader: 'cache-loader',
-          //   options: {
-          //     cacheDirectory: path.resolve(
-          //       __dirname,
-          //       'node_modules/.cache/cache-loader'
-          //     ),
-          //   },
-          // },
           {
             loader: "css-loader",
             options: {
@@ -148,12 +124,13 @@ export default {
     splitChunks: {
       chunks: "all",
     },
-    // minimizer: [
-    //   new TerserJsPlugin({
-    //     terserOptions: { ... },
-    //     cache: true
-    //   })
-    // ]
+    // cache: true
+    minimizer: [
+      new TerserJsPlugin({
+        // terserOptions: { ... },
+        parallel: true,
+      })
+    ]
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -166,17 +143,16 @@ export default {
       template: path.join(__dirname, "..", "index.html"),
       inject: true,
     }),
-    // new HardSourceWebpackPlugin() // альтернатива cache-loader
     // new MiniCssExtractPlugin({
     //   filename: "css/[name].bundle.[fullhash].css",
     //   chunkFilename: "chunks/[id].chunk.[fullhash].css",
     // }),
     new VueLoaderPlugin(),
   ],
-  stats: {
-    children: true,
-    errorDetails: true,
-  },
+  // stats: {
+  //   children: true,
+  //   errorDetails: true,
+  // },
   resolve: {
     extensions: [".tsx", ".ts", ".vue", ".jsx", ".js", ".json"],
     alias: {
