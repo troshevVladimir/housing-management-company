@@ -19,7 +19,7 @@ export default function (req, res, next) {
     try {
       decodedData = jwt.verify(token, config.secret)
     } catch (error) {
-      return res.status(400).json({message: 'Вы не авторизованы'})
+      return res.status(401).json({ message: 'Вы не авторизованы' })
     }
 
     req.user = decodedData

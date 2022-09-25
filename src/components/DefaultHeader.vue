@@ -73,13 +73,24 @@ export default {
 			clearUser: "userData/clearUser",
 			clearHouses: "housesData/clear"
 		}),
-		exit() {
+    exit() {
+      const body = {
+        id: this.user.id
+      }
 			localStorage.removeItem('token')
-			this.clearUser()
 			this.clearHouses()
-			this.$router.push({ name: 'login' })
+      this.clearUser()
+      fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: {
+					'Content-Type': 'application/json',
+				},
+        body: JSON.stringify(body)
+      })
+        .then(() => {
+          this.$router.push({ name: 'login' })
+        })
 		}
-
 	},
 	computed: {
 		...mapGetters({

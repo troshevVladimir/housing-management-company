@@ -3,8 +3,10 @@ export type User = {
     role: string
 }
 
+
 export type Users = Array<User>
 export interface UserData {
     userName: string
     role: string
+    id: string | number
 }

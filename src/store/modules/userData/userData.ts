@@ -18,8 +18,11 @@ const userData = {
         initUserFromStor(ctx: any) {
             ctx.commit('housesData/clear', null, {root: true})
             const token = localStorage.getItem('token')
+
             if (!token) return
+
             const decoded = jwt_decode(token)
+
             ctx.commit('setUser', decoded)
         },
         getUsers(ctx: any) {
@@ -79,6 +82,7 @@ const userData = {
         setUser(state: any, payload: UserData) {
             state.user.name = payload.userName
             state.user.role = payload.role
+            state.user.id = payload.id
         },
         setUsers(state: any, payload: UserData) {
             state.users = payload

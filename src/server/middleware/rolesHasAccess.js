@@ -26,7 +26,7 @@ export default function (roles) {
 
       } catch (error) {
         console.log(error);
-        return res.status(400).json({message: 'Что то пошло не так'})
+        return res.status(401).json({message: 'invalid token or token has been expired'})
       }
 
       next()

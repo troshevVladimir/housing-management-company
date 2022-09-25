@@ -71,6 +71,7 @@ export default defineComponent({
 						this.error = response.message
 						throw new Error(response.message)
 					}
+
 					localStorage.setItem('token', response.token);
 					this.clearUser() // TODO: При выходе и входе приходится очищать поля
 

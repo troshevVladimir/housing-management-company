@@ -20,6 +20,8 @@ router.post('/api/auth/registration', [
   body('password', 'Ошибка в пароле min: 5 , max: 40').isLength({ min: 5 , max: 40}),
 ], AuthController.registration)
 router.post('/api/auth/login', AuthController.login)
+router.post('/api/auth/logout', AuthController.logout)
+router.get('/api/auth/token', AuthController.tokenRefresh)
 
 router.get('/api/getusers/', rolesHasAccess(['admin']), UsersConroller.getUsers)
 router.put('/api/getusers/', UsersConroller.updateUser)
