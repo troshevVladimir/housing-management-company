@@ -6,7 +6,7 @@ class AxiosServie {
   }
 
   get(url: string) {
-    return axiosInstance.get(`/${url}`).then(response => response);
+    return axiosInstance.get(`/${url}`)
   }
 
   post(url: string) {
