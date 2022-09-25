@@ -6,6 +6,7 @@ import RolesTable from "@/components/RolesTable";
 import UsersTable from "@/components/UsersTable";
 import Login from "@/views/Login.vue";
 import Registration from "@/views/Registration.vue";
+import TodoListPage from '@/views/TodoListPage.vue';
 
 const routes = [
   { path: "/", name: 'main', component: MainPage},
@@ -32,6 +33,16 @@ const routes = [
         meta: { title: 'Роли пользователей' }
       }
     ]
+  },
+  {
+    path: '/todo',
+    name: 'todo-list',
+    component: TodoListPage,
+  },
+  {
+    path: '/edit-todo/:id',
+    name: 'todo-edit',
+    component: () => import('@/views/EditPage.vue'),
   },
 
   {

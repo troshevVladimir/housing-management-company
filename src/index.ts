@@ -9,6 +9,8 @@ import router from "./router";
 
 import directives from '@/utils/directives'
 
+import UIButton from '@/components/ui/UIButton.vue';
+
 
 
 const app = createApp(App);
@@ -16,6 +18,11 @@ const app = createApp(App);
 Object.keys(directives).forEach((key) => {
   app.directive(key, directives[key])
 })
+
+app.component(
+  'UIButton',
+  UIButton,
+)
 
 app.use(store);
 app.use(router);
