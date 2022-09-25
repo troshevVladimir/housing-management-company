@@ -16,30 +16,36 @@ const housesData = {
 					'Content-Type': 'application/json; charset=utf-8'
 				},
             })
-                .then(
-                    (res) => {
-                        if (res.status === 401) { // TODO: Сейчас при рефреше надо перезагружать страницу
-                            fetch('/api/auth/token/?email=admin2@gmail.com')
-                                .then(refreshRes => {
-                                    return refreshRes.json()
-                                })
-                                .then(refreshResponse => {
-                                    ctx.commit('clear')
-                                    localStorage.setItem('token', refreshResponse.token)
-                                })
-                        }
-
-                        return res.json()
+                .then((res) => {
+                    if (res.status === 401) {
+                        return fetch('/api/auth/token/?email=admin2@gmail.com') // TODO: hardcod email
                     }
-                ).then(
-                    (response) => {
+                    return res.json()
+                })
+                .then(refreshRes => {
+                    return refreshRes.json()
+                })
+                .then(refreshResponse => {
+                    ctx.commit('clear')
+                    localStorage.setItem('token', refreshResponse.token)
 
-                        if (response.message) {
-                            ctx.commit('setError', response.message)
-                        }
-                        ctx.commit('setHouses', response)
+                    return fetch('/api/houses/', {
+                        method: "GET",
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                            'Content-Type': 'application/json; charset=utf-8'
+                        },
+                    })
+                })
+                .then((res) => {
+                    return res.json()
+                })
+                .then((response) => {
+                    if (response.message) {
+                        ctx.commit('setError', response.message)
                     }
-                )
+                    ctx.commit('setHouses', response)
+                })
                 .catch((e)=>  {
                     console.log(e);
                 })
