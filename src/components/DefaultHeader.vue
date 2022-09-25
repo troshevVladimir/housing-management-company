@@ -85,15 +85,20 @@ export default {
 		...mapMutations({
 			clearUser: "userData/clearUser"
 		}),
-		exit() {
-			localStorage.removeItem('refreshToken')
-			localStorage.removeItem('accessToken')
+    exit() {
+      const body = {
+        id: this.user.id
+      }
+			localStorage.removeItem('token')
       this.clearUser()
       fetch('/api/auth/logout', {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+					'Content-Type': 'application/json',
+				},
+        body: JSON.stringify(body)
       })
         .then(() => {
-          console.log('logout');
           this.$router.push({ name: 'login' })
         })
 		}

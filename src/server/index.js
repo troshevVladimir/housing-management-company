@@ -4,6 +4,7 @@ import router from './router.js'
 import path from "path"
 import { fileURLToPath } from 'url';
 import launchMiddleware from 'launch-editor-middleware'
+import cookieParser from 'cookie-parser'
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -13,7 +14,7 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(formData.parse());
-
+app.use(cookieParser());
 app.use(router)
 
 app.use('/__open-in-editor', launchMiddleware())

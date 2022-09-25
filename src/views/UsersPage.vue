@@ -14,7 +14,6 @@
 import { defineComponent } from 'vue'
 import CustomLoader from '@/components/CustomLoader.vue'
 import ItemModal from '@/components/ItemModal'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
 import * as _ from 'lodash'
 
 interface State {

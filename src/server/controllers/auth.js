@@ -16,6 +16,16 @@ async function generateTokens (id, role, userName) {
   return { accessToken, refreshToken }
 }
 
+function setRefreshToken(token, res) {
+  const options = {
+    maxAge: 1000 * 60 * 60 * 24,
+    httpOnly: true,
+    secure: true,
+  }
+
+  res.cookie('refreshToken', token, options)
+}
+
 class AuthController {
   async registration(req, res) {
     const errors = validationResult(req)
@@ -63,7 +73,9 @@ class AuthController {
       const role = await getRoleById(currentUser.rows[0].role_id)
       const tokens = await generateTokens(currentUser.rows[0].id, role, currentUser.rows[0].email)
 
-      return res.status(200).json(tokens)
+      setRefreshToken(tokens.refreshToken, res)
+
+      return res.status(200).json({token: tokens.accessToken})
     } catch (error) {
       console.log(error);
       return res.status(400).json({message: 'somthing went wrong'})
@@ -72,7 +84,8 @@ class AuthController {
 
   async logout (req, res) {
     try {
-      await db.query(`UPDATE users SET refresh_token='' WHERE id=${req.id} RETURNING *;`)
+      console.log(req.body.id);
+      await db.query(`UPDATE users SET refresh_token='' WHERE id='${req.body.id}'`)
 
       return res.send("Logout successful");
     } catch (error) {
@@ -91,27 +104,34 @@ class AuthController {
   }
 
   async tokenRefresh(req, res) {
-    const { refreshToken, email } = req.body;
+    const { email } = req.query;
+    const { refreshToken } = req.cookies
+
+    console.log('Old one',refreshToken);
 
     if (!refreshToken) {
       return res.sendStatus(401);
     }
 
-    const user = await db.query(`SELECT * from users WHERE email='${email}' RETURNING *;`)
+    const user = await db.query(`SELECT * from users WHERE email='${email}';`)
 
-    if (!user || !user.refresh_token) {
+    if (!user || !user.rows[0].refresh_token || user.rows[0].refresh_token !== refreshToken) {
+      console.log(user.rows[0].refresh_token !== refreshToken);
       return res.sendStatus(401);
     }
 
-    jwt.verify(refreshToken, config.secretRefresh, (err, user) => {
+    jwt.verify(refreshToken, config.secretRefresh, async (err, user) => {
       if (err) {
         return res.sendStatus(403);
       }
 
-      const accessToken = jwt.sign({ username: user.username, role: user.role }, accessTokenSecret, { expiresIn: '20m' });
+      const tokens = await generateTokens(user.id, user.role, user.username)
+      setRefreshToken(tokens.refreshToken, res)
+
+      console.log('New one', tokens.refreshToken);
 
       res.json({
-        accessToken
+        token: tokens.accessToken
       })
     })
   }

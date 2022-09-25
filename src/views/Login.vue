@@ -71,8 +71,7 @@ export default defineComponent({
 						throw new Error(response.message)
 					}
 
-					localStorage.setItem('token', response.accessToken);
-					localStorage.setItem('refreshToken', response.refreshToken);
+					localStorage.setItem('token', response.token);
 					this.$router.push({ name: 'main' })
 				})
 				.catch(e => {

@@ -23,7 +23,7 @@ export default function (roles) {
         }
 
       } catch (error) {
-        return res.status(400).json({message: 'invalid token'})
+        return res.status(401).json({ message: 'invalid token or token has been expired' })
       }
 
       next()

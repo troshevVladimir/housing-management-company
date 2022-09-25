@@ -18,10 +18,22 @@ const housesData = {
             })
                 .then(
                     (res) => {
+                        if (res.status === 401) { // TODO: Сейчас при рефреше надо перезагружать страницу
+                            fetch('/api/auth/token/?email=admin2@gmail.com')
+                                .then(refreshRes => {
+                                    return refreshRes.json()
+                                })
+                                .then(refreshResponse => {
+                                    ctx.commit('clear')
+                                    localStorage.setItem('token', refreshResponse.token)
+                                })
+                        }
+
                         return res.json()
                     }
                 ).then(
                     (response) => {
+
                         if (response.message) {
                             ctx.commit('setError', response.message)
                         }
