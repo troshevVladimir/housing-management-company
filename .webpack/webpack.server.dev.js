@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 
 export default merge(baseConf, {
   devtool: 'source-map',
-  entry: './src/index.ts',
+  entry: './src/index.server.ts',
   mode: "development",
   output: {
     filename: "js/[name].bundle.[fullhash].js",

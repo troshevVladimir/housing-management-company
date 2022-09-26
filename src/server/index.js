@@ -6,7 +6,7 @@ import fs from "fs"
 import { fileURLToPath } from 'url';
 import launchMiddleware from 'launch-editor-middleware'
 import { renderToString } from 'vue/server-renderer'
-import { createSSRApp } from "vue";
+// import { createSSRApp } from "vue";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -22,8 +22,8 @@ server.use(router)
 server.use('/__open-in-editor', launchMiddleware())
 
 server.get('*', async (req, res) => {
-    const compiledApp = createSSRApp(vueApp)
-    const appString = await renderToString(compiledApp)
+    // const compiledApp = createSSRApp(vueApp)
+    const appString = await renderToString(vueApp)
     console.log(appString);
     const html = `
         <!DOCTYPE html>
