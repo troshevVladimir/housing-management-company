@@ -6,6 +6,7 @@ import { Actions, actions } from './actions'
 
 import housesData from './modules/housesData'
 import userData from './modules/userData'
+import todoData from './modules/todoData'
 
 export const store = createStore({
   state,
@@ -14,6 +15,7 @@ export const store = createStore({
   actions,
   modules: {
     housesData,
-    userData
+    userData,
+    todoData
   }
 });
