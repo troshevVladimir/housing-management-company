@@ -1,0 +1,20 @@
+:root {
+  --dark-color: #001848;
+  --light-color: #906090;
+  --accent-color: #301860;
+  --secondary-color: #483078;
+  --tertiary-color: #37388f;
+  --disable-color: #83798d;
+  --white-color: #f1eeee;
+  --black-color: #000;
+
+
+  --text-color: var(--dark-color);
+  --text-light-color: var(--white-color);
+  --text-acent-color: var(--accent-color);
+  --text-disable-color: var(--disable-color);
+
+  --bg-color: var(--light-color);
+  --bg-secondary-color: var(--secondary-color);
+
+}
