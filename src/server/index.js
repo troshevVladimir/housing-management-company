@@ -6,13 +6,14 @@ import fs from "fs"
 import { fileURLToPath } from 'url';
 import launchMiddleware from 'launch-editor-middleware'
 import { renderToString } from 'vue/server-renderer'
-// import { createSSRApp } from "vue";
+// import serialize from 'serialize-javascript';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const pathToMainJs = JSON.parse(fs.readFileSync('./public/ssr-manifest.json'))['main.js'];
-const appPath = path.resolve(__dirname, '../../public/', pathToMainJs)
+const pathToMainJs = JSON.parse(fs.readFileSync('./public/server/ssr-manifest.json'))['main.js'];
+const appPath = path.resolve(__dirname, '../../public/server/', pathToMainJs)
 const vueApp = fs.readFileSync(appPath)
+
 const server = express()
 
 server.use(express.json())
@@ -22,9 +23,9 @@ server.use(router)
 server.use('/__open-in-editor', launchMiddleware())
 
 server.get('*', async (req, res) => {
-    // const compiledApp = createSSRApp(vueApp)
-    const appString = await renderToString(vueApp)
-    console.log(appString);
+
+    const appContent = await renderToString(vueApp)
+
     const html = `
         <!DOCTYPE html>
         <html lang="en">
@@ -36,7 +37,7 @@ server.get('*', async (req, res) => {
         </head>
 
         <body>
-            ${appString}
+            ${appContent}
         </body>
         </html>
     `
