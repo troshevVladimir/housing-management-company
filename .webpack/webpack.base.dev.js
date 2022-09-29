@@ -75,7 +75,7 @@ export default {
       },
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: ["vue-style-loader", "css-loader"], //style-loader
       },
       {
         test: /\.sass$|\.scss$/,
@@ -112,5 +112,11 @@ export default {
     children: true,
     errorDetails: true,
   },
-
+  resolve: {
+    extensions: [".tsx", ".ts", ".vue", ".jsx", ".js", ".json"],
+    alias: {
+      vue: "@vue/runtime-dom",
+      '@': path.resolve('src'),
+    },
+  },
 };

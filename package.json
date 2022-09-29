@@ -11,7 +11,7 @@
     "tsc": "vue-tsc --noEmit",
     "build:client": "webpack --config .webpack/webpack.client.dev.js",
     "build:server": "webpack --config .webpack/webpack.server.dev.js",
-    "build:ssr": "rm -rf ./public && yarn run build:client && yarn run build:server"
+    "build:ssr": "yarn run build:client && yarn run build:server"
   },
   "type": "module",
   "keywords": [],
