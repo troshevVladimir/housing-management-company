@@ -10,14 +10,14 @@ const __dirname = path.dirname(__filename);
 
 export default merge(baseConf, {
   devtool: 'source-map',
-  entry: './src/server-entry.ts',
+  entry: './src/server-entry.js',
   output: {
-    filename: "js/[name].bundle.[fullhash].js",
+    filename: "js/[name].bundle.[fullhash].cjs",
     path: path.join(__dirname, "..", "public/server/"),
     clean: true,
     libraryTarget: 'commonjs2'
   },
-  mode: "production",
+  mode: "development",
   module: {
     rules: [
       {

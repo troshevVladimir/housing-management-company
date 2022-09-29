@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 
 export default merge(baseConf, {
   devtool: "inline-source-map",
-  entry: "./src/client-entry.ts",
+  entry: "./src/client-entry.js",
   mode: "development",
   target: "web",
   // watch: true,

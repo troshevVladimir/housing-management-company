@@ -1,6 +1,7 @@
 import path from "path"
 import webpack from 'webpack'
-import {VueLoaderPlugin} from 'vue-loader'
+import { VueLoaderPlugin } from 'vue-loader'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 const isDev = false;
 
 export default {
@@ -75,12 +76,12 @@ export default {
       },
       {
         test: /\.css$/i,
-        use: ["vue-style-loader", "css-loader"], //style-loader
+        use: [MiniCssExtractPlugin.loader, "css-loader"], //style-loader
       },
       {
         test: /\.sass$|\.scss$/,
         use: [
-          'vue-style-loader',
+          MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
@@ -104,6 +105,11 @@ export default {
     new webpack.DefinePlugin({
       __VUE_OPTIONS_API__: true,
       __VUE_PROD_DEVTOOLS__: true,
+    }),
+
+    new MiniCssExtractPlugin({
+      filename: "[hash]-[name].css",
+      chunkFilename: "[id].css",
     }),
 
     new VueLoaderPlugin(),
