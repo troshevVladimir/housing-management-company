@@ -14,25 +14,25 @@ export default function (ctx) {
     await router.push(ctx.url);
     await router.isReady();
 
-    const matchedComponents = router.currentRoute.value.matched.flatMap(record => Object.values(record.components))
+    // const matchedComponents = router.currentRoute.value.matched.flatMap(record => Object.values(record.components))
 
-    if (!matchedComponents.length) {
-      return reject({ code: 404 });
-    }
+    // if (!matchedComponents.length) {
+    //   return reject({ code: 404 });
+    // }
 
-    Promise.all(matchedComponents.map(component => {
-      if (component.asyncData) {
-        return component.asyncData(store)
-      }
-    })).then(async (res) => {
+    // Promise.all(matchedComponents.map(component => {
+    //   if (component.asyncData) {
+    //     return component.asyncData(store)
+    //   }
+    // })).then(async (res) => {
       let html = await renderToString(app);
 
       html += `<script>window.__INITIAL_STATE__ = ${replaceHtmlTag(JSON.stringify(store.state))}</script>`
 
       resolve(html);
-    }).catch(() => {
-      reject(html)
-    })
+    // }).catch(() => {
+    //   reject(html)
+    // })
   })
 }
 

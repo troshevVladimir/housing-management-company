@@ -1,14 +1,20 @@
-import { createApp } from './app.js';
+// import { createApp } from './app.js';
 import { createWebHistory } from 'vue-router'
 import createRouter from './router/index.js'
 import { store } from './store/index.ts';
-const router = createRouter(createWebHistory())
+import { createSSRApp } from 'vue'
+import App from './App.vue'
 
-const app = createApp();
+const router = createRouter(createWebHistory())
+// const app = createApp();
+const app = createSSRApp(App)
+
 app.use(router);
+
 if (window.__INITIAL_STATE__) {
   store.replaceState(window.__INITIAL_STATE__);
 }
+
 app.use(store)
 
 router.isReady().then(() => {

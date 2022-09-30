@@ -2,6 +2,7 @@ import path from "path"
 import webpack from 'webpack'
 import { VueLoaderPlugin } from 'vue-loader'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 const isDev = false;
 
 export default {
@@ -110,6 +111,9 @@ export default {
     new MiniCssExtractPlugin({
       filename: "[hash]-[name].css",
       chunkFilename: "[id].css",
+    }),
+    new WebpackManifestPlugin({
+      fileName: 'ssr-manifest.json'
     }),
 
     new VueLoaderPlugin(),

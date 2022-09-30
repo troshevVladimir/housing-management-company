@@ -2,8 +2,8 @@ import baseConf from './webpack.base.dev.js'
 import { merge } from 'webpack-merge'
 import path from "path"
 import { fileURLToPath } from 'url'
-import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 import nodeExternals from 'webpack-node-externals';
+import CopyPlugin from 'copy-webpack-plugin';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,7 +30,6 @@ export default merge(baseConf, {
               "corejs": 3
             }]]
           },
-
         },
         exclude: /node_modules/
       }
@@ -41,8 +40,11 @@ export default merge(baseConf, {
     allowlist: [/\.(css|vue)$/]
   })],
   plugins: [
-    new WebpackManifestPlugin({
-      fileName: 'ssr-manifest.json'
+
+    new CopyPlugin({
+      patterns: [
+        { from: path.resolve(__dirname, "../src/assets/favicon.ico"), to: path.resolve(__dirname, './../public/') },
+      ],
     }),
   ],
 });

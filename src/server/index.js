@@ -9,9 +9,22 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const manifest = require('../../public/server/ssr-manifest.json')
-const appPath = path.join(__dirname, '../../public/server/', manifest['main.cjs'])
-const styelPath = path.join(__dirname, '../../public/server/', manifest['main.css'])
+const serverManifest = require('../../public/server/ssr-manifest.json')
+const clientManifest = require('../../public/client/ssr-manifest.json')
+const appPath = path.join(__dirname, '../../public/server/', serverManifest['main.cjs'])
+// const styelPath = path.join(__dirname, '../../public/server/', manifest['main.css'])
+const styelPath = serverManifest['main.css']
+let jsPath = clientManifest['main.js']
+let vendorJsPath = clientManifest['js/vendors-node_modules_vue_runtime-dom_dist_runtime-dom_esm-bundler_js-node_modules_jwt-decode_-096634.bundle.js']
+
+function removeAuto(path) {
+    path = path.split('/')
+    path.shift()
+    path = path.join('/')
+
+    return path
+}
+
 const createApp = require(appPath).default;
 
 const server = express()
@@ -26,7 +39,9 @@ server.use(express.urlencoded({ extended: false }))
 server.use(formData.parse());
 server.use(router)
 server.use('/__open-in-editor', launchMiddleware())
-// server.use(express.static(path.resolve(__dirname, '../../public/')))
+
+server.use(express.static(path.resolve(__dirname, '../../public/')))
+
 server.get('*', async (req, res) => {
 
     const appContent = await createApp(req);
@@ -34,26 +49,9 @@ server.get('*', async (req, res) => {
     const html = indexTemplate
         .toString()
         .replace('<div id="app">', `<div id="app">${appContent}`)
-        .replace('##style', `<link rel="stylesheet" href="./${styelPath}">`)
-
-
-
-    // const html = `
-    //     <!DOCTYPE html>
-    //     <html lang="en">
-    //     <head>
-    //         <script src="https://api-maps.yandex.ru/2.1/?apikey=Your API key&lang=en_US" type="text/javascript"></script>
-    //         <meta charset="utf-8" />
-    //         <meta name="viewport" content="width=device-width, initial-scale=1" />
-    //         <title></title>
-    //     </head>
-
-    //     <body>
-    //         <div id="app">${appContent}</div>
-    //     </body>
-    //     </html>
-    // `
-
+        .replace('##style', `<link rel="stylesheet" href="../server/${styelPath}">`)
+        .replace('##js', `<script defer src="./${removeAuto(jsPath)}"></script>`)
+        .replace('##vue', `<script defer src="./${removeAuto(vendorJsPath)}"></script>`)
     res.setHeader('Content-Type', 'text/html');
     res.send(html);
 })
