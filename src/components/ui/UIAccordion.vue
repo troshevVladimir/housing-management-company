@@ -1,11 +1,13 @@
 <template>
-  <div :class="tab['tab-container']">
-    <div :class="tab['tab-label']" @click='tabTogle'>
+  <div :class="accordion['accordion-container']">
+    <div :class="accordion['accordion-label']" @click='accordionTogle'>
       <slot name='label'/>
     </div>
-    <div :class="[tab['tab-content'], 'tab-content', {[tab['tab-visible']]: this.visible}]">
-      <slot name='content'/>
-    </div>
+    <Transition name="accordion">
+      <div :class="[accordion['accordion-content'], 'accordion-content']" v-show="visible">
+        <slot name='content'/>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -13,7 +15,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "ui-tab",
+  name: "ui-accordion",
   props: {
     name: {
       required: true,
@@ -25,12 +27,12 @@ export default defineComponent({
       visible: false,
     }
   },
-	computed: {
-	},
   methods: {
-    tabTogle() {
+    accordionTogle() {
+      if (!this.visible) {
+        this.$emit('open')
+      }
       this.visible = !this.visible
-      this.shine()
     },
     close() {
       this.visible = false
@@ -45,30 +47,22 @@ export default defineComponent({
       }
     }
   }
-
 });
 </script>
 
-<style module='tab'>
-  .tab-container {
+<style module='accordion'>
+  .accordion-container {
     width: 100%;
     margin-top: 0;
   }
 
-  .tab-label {
+  .accordion-label {
     cursor: pointer;
     background-color: rgb(122, 75, 75);
     padding: 20px 10px;
   }
 
-  .tab-content.tab-visible {
-    display: block;
-    visibility: visible;
-  }
-
-  .tab-content {
-    display: none;
-    visibility: hidden;
+  .accordion-content {
     padding: 5px 10px;
     margin-bottom: 0;
     background-color: var(--bg-secondary-color);
@@ -76,12 +70,35 @@ export default defineComponent({
 </style>
 
 <style lang='scss' scoped>
-  .tab-content{
+  .accordion-content{
     :slotted(p) {
       font-size: 14px;
       font-weight: 400;
-      color: var(--text-light-color);
+      color: var(--white-color);
       letter-spacing: 0.5px;
+      transition: opacity 0.5s ease;
     }
+  }
+
+  .accordion-enter-active,
+  .accordion-leave-active {
+    transition: all 0.5s ease;
+    :slotted(p) {
+      opacity: 0;
+    }
+  }
+
+  .accordion-enter-from,
+  .accordion-leave-to {
+    transform-origin: 0 0;
+    transform: scaleY(0);
+    opacity: 0;
+  }
+
+  .accordion-enter-to,
+  .accordion-leave-from {
+    transform-origin: 0 0;
+    transform: scaleY(1);
+    opacity: 1;
   }
 </style>

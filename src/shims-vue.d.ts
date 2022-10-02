@@ -7,3 +7,4 @@ declare module "*.vue" {
 declare module 'jsonwebtoken';
 declare module 'lodash';
 declare module 'bcrypt';
+declare module 'v-click-outside';

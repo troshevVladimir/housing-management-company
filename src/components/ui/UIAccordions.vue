@@ -1,7 +1,7 @@
 <template>
-  <div class="tabs-container">
-    <div class="tabs-header">
-      <h2 class="tabs-title">{{ title }}</h2>
+  <div class="accordions-container">
+    <div class="accordions-header">
+      <h3 class="accordions-title">{{ title }}</h3>
     </div>
     <slot/>
   </div>
@@ -11,26 +11,17 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "ui-tabs",
+  name: "ui-accordions",
   props: {
     title: {
       type: String
     }
   },
-	computed: {
-	},
-  methods: {
-    closeAll() {
-
-    }
-	},
-	mounted() {
-	}
 });
 </script>
 
 <style lang="scss" scoped>
-  .tabs-container {
+  .accordions-container {
     width: 100%;
   }
 </style>

@@ -2,12 +2,12 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import { store } from "./store";
 import router from "./router";
-
 import directives from '@/utils/directives'
 
 import UIButton from '@/components/ui/UIButton.vue';
-import UITabs from '@/components/ui/UITabs.vue';
-import UITab from '@/components/ui/UITab.vue';
+import UIAccordions from '@/components/ui/UIAccordions.vue';
+import UIAccordion from '@/components/ui/UIAccordion.vue';
+import UIInput from '@/components/ui/UIInput.vue';
 
 import "@/styles/index.scss";
 
@@ -17,9 +17,10 @@ Object.keys(directives).forEach((key) => {
   app.directive(key, directives[key])
 })
 
-app.component('UIButton', UIButton)
-app.component('ui-tabs', UITabs)
-app.component('ui-tab', UITab)
+app.component('ui-button', UIButton)
+app.component('ui-accordions', UIAccordions)
+app.component('ui-accordion', UIAccordion)
+app.component('ui-input', UIInput)
 
 app.use(store);
 app.use(router);
