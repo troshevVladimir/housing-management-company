@@ -3,7 +3,7 @@
     <div class="accordions-header">
       <h3 class="accordions-title">{{ title }}</h3>
     </div>
-    <slot/>
+    <slot />
   </div>
 </template>
 
