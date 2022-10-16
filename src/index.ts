@@ -10,6 +10,11 @@ import UIAccordion from '@/components/ui/UIAccordion.vue';
 import UIInput from '@/components/ui/UIInput.vue';
 import UITab from '@/components/ui/UITab.vue';
 import UITabs from '@/components/ui/UITabs.vue';
+import UICheckbox from '@/components/ui/UICheckbox.vue';
+import UISelect from '@/components/ui/UISelect.vue';
+import UIForm from '@/components/ui/UIForm.vue';
+import UITable from '@/components/ui/UITable.vue';
+
 
 import "@/styles/index.scss";
 
@@ -25,6 +30,10 @@ app.component('ui-accordion', UIAccordion)
 app.component('ui-input', UIInput)
 app.component('ui-tab', UITab)
 app.component('ui-tabs', UITabs)
+app.component('ui-checkbox', UICheckbox)
+app.component('ui-select', UISelect)
+app.component('ui-form', UIForm)
+app.component('ui-table', UITable)
 
 app.use(store);
 app.use(router);

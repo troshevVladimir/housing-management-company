@@ -1,5 +1,5 @@
 <template>
-  <section class="accordions">
+  <div>
     <h2>Acordion</h2>
     <ui-accordions title="Title">
       <ui-accordion name="tab1" class="accordion">
@@ -25,26 +25,20 @@
         </template>
       </ui-accordion>
     </ui-accordions>
-  </section>
+  </div>
 
-  <section class="inputs">
+  <div class="inputs">
     <h2>Inputs</h2>
     <ui-input
       label="input text"
       tag="input"
       type="text"
       name="my-name"
+      placeholder="Введите значение"
     ></ui-input>
-    <ui-input
-      label="input checkbox"
-      tag="input"
-      type="checkbox"
-      name="agreement"
-    ></ui-input>
-    <ui-input label="input select" type="select" name="contry"></ui-input>
-  </section>
+  </div>
 
-  <section class="buttons">
+  <div class="buttons">
     <h2>Buttons</h2>
 
     <ui-button kind="danger">Button</ui-button>
@@ -58,26 +52,66 @@
     <ui-button disabled kind="danger">Button</ui-button>
 
     <ui-button router-link-to="http://localhost:8090/#tab1">Link</ui-button>
-  </section>
+  </div>
 
-  <section class="tabs">
+  <div class="tabs">
     <h2>Tabs</h2>
     <ui-tabs>
       <ui-tab id="0" title="Tab 1">Tab 1</ui-tab>
       <ui-tab id="1" title="Tab 2">Tab 2</ui-tab>
     </ui-tabs>
-  </section>
+  </div>
+  <div class="form">
+    <h2>Form</h2>
+    <ui-form>
+      <ui-input name="name" placeholder="Введите Имя" label="Имя" value="" />
+      <ui-input
+        name="surname"
+        placeholder="Введите Фамилию"
+        label="Фамилия"
+        value=""
+      />
+      <ui-checkbox name="agreement" value
+        >Согласны ли вы на обработку данных</ui-checkbox
+      >
+
+      <ui-select
+        label="Страна проживания"
+        name="contry"
+        placeholder="Выберите Страну"
+        :data="[
+          {
+            id: 0,
+            value: 'ru',
+            text: 'Russia',
+            selected: false,
+          },
+          {
+            id: 1,
+            value: 'usa',
+            text: 'USA',
+            selected: false,
+          },
+          {
+            id: 2,
+            value: 'au',
+            text: 'Australia',
+            selected: false,
+          },
+        ]"
+      >
+        Select
+      </ui-select>
+    </ui-form>
+  </div>
+  <div class="table">
+    <h2>Table</h2>
+    <ui-table />
+  </div>
 </template>
 
-<script>
-</script>
 
 <style lang="scss" scoped>
-  section {
-    margin-bottom: 30px;
-    max-width: 600px;
-  }
-
   .accordion {
     &:deep(.label) {
       font-size: 16px;

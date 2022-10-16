@@ -1,18 +1,21 @@
 <template>
-    <div class="select" v-click-outside="closeDropdown">
-      <div class="select__input input" @click="togleDropdown">
-        <span class="select__text">{{selectedText}}</span>
-      </div>
-      <ul class="select__dropdown" v-show="dropdownOpen">
-        <li
-          class="select__dropdown-item"
-          v-for="item in localData"
-          :class="{'active': curentItem(item.id)}"
-          :key="item.id"
-          @click="selectItem(item.id)"
-        >{{item.text}}</li>
-      </ul>
+  <div class="select" v-click-outside="closeDropdown">
+    <label @click="togleDropdown">{{ label }}</label>
+    <div class="select__input" @click="togleDropdown">
+      <span class="select__text">{{ selectedText }}</span>
     </div>
+    <ul class="select__dropdown" v-show="dropdownOpen">
+      <li
+        class="select__dropdown-item"
+        v-for="item in localData"
+        :class="{ active: item.selected }"
+        :key="item.id"
+        @click="selectItem(item.id)"
+      >
+        {{ item.text }}
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script lang="ts">
@@ -23,15 +26,16 @@ export interface SelectDataItem {
   id: ID
   value: string
   text: string
-  seletcd: boolean
+  selected: boolean
 }
 
 export type ArraySelectData = Array<SelectDataItem>
 
 export interface Data {
-  selectedItem: null | SelectDataItem
+  localValue: number | string | null | SelectDataItem
   dropdownOpen: boolean
   localData: ArraySelectData
+  selectedText: string
 }
 import { PropType, defineComponent } from "vue";
 export default defineComponent({
@@ -39,108 +43,131 @@ export default defineComponent({
     data: {
       type: Array as PropType<ArraySelectData>,
       required: true,
-      default: [
-        {
-          id: 0,
-          value: 'asdasd',
-          text: '#1',
-          seletcd: false,
-        },
-        {
-          id: 1,
-          value: 'asdasd',
-          text: '#2',
-          seletcd: false,
-        },
-        {
-          id: 2,
-          value: 'asdasd',
-          text: '#3',
-          seletcd: false,
-        }
-      ]
+    },
+    value: {
+      type: [String, Number],
+    },
+    modelValue: {
+      type: [String, Number],
+    },
+    label: {
+      type: String,
+    },
+    name: {
+      type: String,
+    },
+    placeholder: {
+      type: String,
     }
   },
   name: 'UISelect',
   data(): Data {
     return {
       dropdownOpen: false,
-      selectedItem: null,
-      localData: this.data
+      localValue: this.value || this.modelValue || null,
+      localData: this.data,
+      selectedText: this.placeholder || ''
+    }
+  },
+  computed: {
+    selectedID() {
+      return this.localValue ? this.localValue.id : ''
     }
   },
   methods: {
     selectItem(id: ID) {
-      if (this.selectedItem && this.selectedItem.id === id) {
-        this.selectedItem = null
-        return
-      }
-
       const selected = this.localData.find((el: SelectDataItem) => {
         return el.id === id
       })
-      this.selectedItem = selected
-      this.$emit('input', selected.id)
+
+      if (selected.selected) {
+        selected.selected = false
+        this.localValue = ''
+        this.selectedText = this.placeholder
+        return
+      }
+      this.localData.forEach((el: SelectDataItem) => {
+        el.selected = false
+      });
+      selected.selected = true
+      this.localValue = selected.value
+      this.selectedText = selected.text
+      this.$emit('change', selected.id)
+      this.$emit('update:modelValue', selected.id)
+      this.closeDropdown()
     },
     togleDropdown() {
       this.dropdownOpen = !this.dropdownOpen
     },
-    closeDropdown () {
+    closeDropdown() {
       this.dropdownOpen = false
+      this.selectedText
     },
-    curentItem(id: ID) {
-      return id === this.selectedID
+  },
+  created() {
+    this.localValue = this.value || this.modelValue
+    if (this.$parent.formItems && Array.isArray(this.$parent.formItems)) {
+      this.$parent.formItems.push(this)
     }
   },
-  computed: {
-    selectedText() {
-      return this.selectedItem?.text || ' '
-    },
-    selectedID() {
-      return this.selectedItem ? this.selectedItem.id : ''
-    }
-  }
 })
 </script>
 
-<style lang='scss' scoped>
-.select {
-  width: 100%;
-  $parent: &;
-
-  &__input {
+<style lang='scss'>
+  .select {
     width: 100%;
+    display: block;
+    $parent: &;
     position: relative;
 
-    #{$parent}__text {
-      display: block;
-      min-height: 24px; // Проблема с высотой селекта
-    }
-  }
+    &__input {
+      cursor: pointer;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      color: #666666;
+      padding: 16px;
+      border: none;
+      width: 100%;
+      background-color: #fff;
+      border-radius: 4px;
 
-  &__dropdown {
-    width: 100%;
-    padding: 10px;
-    background-color: var(--light-color);
-    position: relative;
-    top: 100%;
-    border-radius: 4px;
-  }
+      &:hover {
+        outline: rgba(49, 112, 238, 0.5) auto 1px;
+      }
 
-  &__dropdown-item {
-    color: var(--text-light-color);
-    padding: 5px 10px;
-    cursor: pointer;
-    background-color: var(--bg-secondary-color);
-
-    &:not(:last-child) {
-      margin-bottom: 5px;
+      &:focus-visible {
+        outline: rgba(49, 112, 238, 0.5) auto 1px;
+      }
     }
 
-    &.active {
-      border: 3px solid var(--accent-color);
+    &__dropdown {
+      position: absolute;
+      top: calc(100% + 3px);
+      width: 100%;
+      padding: 10px;
+      background-color: var(--light-color);
+      border-radius: 4px;
+    }
+
+    &__dropdown-item {
+      color: var(--text-light-color);
+      transition: background-color ease 0.2s;
+      padding: 5px 10px;
+      cursor: pointer;
+      background-color: var(--bg-secondary-color);
+
+      &:not(:last-child) {
+        margin-bottom: 5px;
+      }
+
+      &.active {
+        border: 3px solid var(--accent-color);
+      }
+
+      &:hover {
+        background-color: var(--disable-color);
+      }
     }
   }
-}
-
 </style>

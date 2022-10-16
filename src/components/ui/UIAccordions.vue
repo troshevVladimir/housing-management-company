@@ -4,6 +4,7 @@
       <h3 class="accordions-title">{{ title }}</h3>
     </div>
     <slot />
+    <ui-button @click="closeAll">Close all</ui-button>
   </div>
 </template>
 
@@ -17,6 +18,18 @@ export default defineComponent({
       type: String
     }
   },
+  data() {
+    return {
+      children: []
+    }
+  },
+  methods: {
+    closeAll() {
+      this.children.forEach((el: any) => {
+        el.close()
+      });
+    }
+  }
 });
 </script>
 

@@ -1,11 +1,14 @@
 <template>
   <div :class="accordion['accordion-container']">
-    <div :class="accordion['accordion-label']" @click='accordionTogle'>
-      <slot name='label'/>
+    <div :class="accordion['accordion-label']" @click="accordionTogle">
+      <slot name="label" />
     </div>
     <Transition name="accordion">
-      <div :class="[accordion['accordion-content'], 'accordion-content']" v-show="visible">
-        <slot name='content'/>
+      <div
+        :class="[accordion['accordion-content'], 'accordion-content']"
+        v-show="visible"
+      >
+        <slot name="content" />
       </div>
     </Transition>
   </div>
@@ -46,6 +49,9 @@ export default defineComponent({
         this.$router.replace({ name: this.$route.name })
       }
     }
+  },
+  created() {
+    this.$parent.children.push(this)
   }
 });
 </script>
@@ -70,7 +76,7 @@ export default defineComponent({
 </style>
 
 <style lang='scss' scoped>
-  .accordion-content{
+  .accordion-content {
     :slotted(p) {
       font-size: 14px;
       font-weight: 400;

@@ -3,7 +3,7 @@
     <DefaultHeader></DefaultHeader>
 
     <section class="content">
-			<h1 class="houses-page__page-title">{{$route.meta.title}}</h1>
+      <h1 class="houses-page__page-title">{{ $route.meta.title }}</h1>
       <router-view></router-view>
     </section>
 
@@ -20,60 +20,61 @@ import DefaultHeader from "../components/DefaultHeader.vue";
 import { mapGetters, mapActions } from 'vuex'
 
 export default defineComponent({
-	name: "default-layout",
-	components: {
-		DefaultAsside,
-		DefaultHeader
-	},
-	computed: {
-		...mapGetters({
-			userName: 'getUserName'
-		})
-	},
-	methods: {
-		...mapActions({
-			initUserFromStor: 'userData/initUserFromStor'
-		})
-	},
-	mounted() {
-		this.initUserFromStor()
-	}
+  name: "default-layout",
+  components: {
+    DefaultAsside,
+    DefaultHeader
+  },
+  computed: {
+    ...mapGetters({
+      userName: 'getUserName'
+    })
+  },
+  methods: {
+    ...mapActions({
+      initUserFromStor: 'userData/initUserFromStor'
+    })
+  },
+  mounted() {
+    this.initUserFromStor()
+  }
 });
 </script>
 
 <style lang="scss">
-	.main {
-		display: grid;
-		width: 100%;
-		height: 100vh;
-		overflow: hidden;
-		grid-template-rows: 70px auto 100px;
-		grid-template-columns: 200px auto;
+  .main {
+    display: grid;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    grid-template-rows: 70px auto 100px;
+    grid-template-columns: 200px auto;
 
-		grid-template-areas:
-			'header header'
-			'sidebar content'
-			'footer footer';
+    grid-template-areas:
+      'header header'
+      'sidebar content'
+      'footer footer';
 
-		.header {
-			grid-area: header;
-			z-index: 10;
-		}
+    .header {
+      grid-area: header;
+      z-index: 10;
+    }
 
-		.sidebar {
-			grid-area: sidebar;
-			background-color: rgb(110, 60, 60);
-		}
+    .sidebar {
+      grid-area: sidebar;
+      background-color: rgb(110, 60, 60);
+    }
 
-		.content {
-			grid-area: content;
-			background-color: rgb(101, 97, 109);
+    .content {
+      grid-area: content;
+      background-color: rgb(101, 97, 109);
+      overflow: auto;
 
-			padding: 20px 15px;
-		}
+      padding: 20px 15px;
+    }
 
-		.footer {
-			grid-area: footer;
-		}
-	}
+    .footer {
+      grid-area: footer;
+    }
+  }
 </style>
