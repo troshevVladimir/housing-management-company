@@ -45,14 +45,15 @@ export default {
 
 <style lang='scss'>
 .button {
-  padding: 20px 30px;
+  padding: 10px 30px;
   border: 2px solid #666;
+  border-radius: 5px;
   color: #000;
   transition: all ease .4s;
   text-decoration: none;
 
   @media screen and (max-width: 600px) {
-    padding: 10px 15px;
+    padding: 5px 15px;
   }
 
   &:hover {
@@ -77,12 +78,14 @@ export default {
 
   &--size {
     &-small {
-      padding: 10px 15px;
+      padding: 6px 12px;
     }
   }
 
-  &--type-a {
+  &--type-router-link {
     text-decoration: underline;
+    border-color: rgb(39, 66, 187);
+    color: rgb(39, 66, 187);
   }
 
   &--disabled {

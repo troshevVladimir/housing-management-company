@@ -1,15 +1,15 @@
 export default {
   'click-outside': {
-    bind: function (el, binding, vnode) {
-      el.clickOutsideEvent = function (event) {
-        if (!(el == event.target || el.contains(event.target))) {
-          vnode.context[binding.expression](event);
+    mounted(el, binding) {
+      el.clickOutsideEvent = function(event) {
+        if (!(el === event.target || el.contains(event.target))) {
+          binding.value(event, el);
         }
       };
-      document.body.addEventListener('click', el.clickOutsideEvent)
+      document.body.addEventListener('click', el.clickOutsideEvent);
     },
-    unbind: function (el) {
-      document.body.removeEventListener('click', el.clickOutsideEvent)
-    },
+    unmounted(el) {
+      document.body.removeEventListener('click', el.clickOutsideEvent);
+    }
   }
 }

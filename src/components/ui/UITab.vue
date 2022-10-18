@@ -1,87 +1,57 @@
 <template>
-  <div :class="tab['tab-container']">
-    <div :class="tab['tab-label']" @click='tabTogle'>
-      <slot name='label'/>
-    </div>
-    <div :class="[tab['tab-content'], 'tab-content', {[tab['tab-visible']]: this.visible}]">
-      <slot name='content'/>
+  <div v-show="isActive" class="tabs__body">
+    <div class="tabs__content">
+      <slot></slot>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "ui-tab",
-  props: {
-    name: {
-      required: true,
-      type: String
-    }
-  },
+<script>
+export default {
   data() {
     return {
-      visible: false,
+      isActive: false,
     }
   },
-	computed: {
-	},
-  methods: {
-    tabTogle() {
-      this.visible = !this.visible
-      this.shine()
+  props: {
+    id: {
+      type: [Number, String],
+      required: true,
     },
-    close() {
-      this.visible = false
+    selected: {
+      type: Boolean,
+      required: false,
+    },
+    title: {
+      type: String,
+      required: true,
     },
   },
-  watch: {
-    visible(val) {
-      if (val) {
-        this.$router.replace({ name: this.$route.name, hash: `#${this.name}` })
-      } else {
-        this.$router.replace({ name: this.$route.name })
-      }
-    }
-  }
-
-});
+  mounted() {
+    this.isActive = this.selected
+  },
+  created() {
+    this.$parent.tabsArray.push(this)
+  },
+}
 </script>
 
-<style module='tab'>
-  .tab-container {
+<style lang="scss" scoped>
+  .tabs__body {
     width: 100%;
-    margin-top: 0;
   }
 
-  .tab-label {
-    cursor: pointer;
-    background-color: rgb(122, 75, 75);
-    padding: 20px 10px;
+  .tabs__content {
+    background: #f5f5f8;
+    border-radius: 16px;
+    padding: 20px 24px;
+    width: 100%;
   }
 
-  .tab-content.tab-visible {
-    display: block;
-    visibility: visible;
-  }
-
-  .tab-content {
-    display: none;
-    visibility: hidden;
-    padding: 5px 10px;
-    margin-bottom: 0;
-    background-color: var(--bg-secondary-color);
-  }
-</style>
-
-<style lang='scss' scoped>
-  .tab-content{
-    :slotted(p) {
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--text-light-color);
-      letter-spacing: 0.5px;
+  @media screen and (max-width: 600px) {
+    .tabs__content {
+      padding-left: 16px;
+      padding-right: 16px;
     }
   }
 </style>
