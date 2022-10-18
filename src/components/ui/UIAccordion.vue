@@ -35,6 +35,7 @@ export default defineComponent({
       if (!this.visible) {
         this.$emit('open')
       }
+      this.$parent.closeAll()
       this.visible = !this.visible
     },
     close() {
