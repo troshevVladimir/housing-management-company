@@ -8,29 +8,27 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "ui-accordions",
+<script>
+export default {
+  name: 'ui-accordions',
   props: {
     title: {
-      type: String
-    }
+      type: String,
+    },
   },
   data() {
     return {
-      children: []
+      children: [],
     }
   },
   methods: {
     closeAll() {
-      this.children.forEach((el: any) => {
+      this.children.forEach((el) => {
         el.close()
-      });
-    }
-  }
-});
+      })
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>

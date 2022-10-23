@@ -1,6 +1,15 @@
 <template>
-  <div class="select" v-click-outside="closeDropdown">
-    <label @click="togleDropdown">{{ label }}</label>
+  <div
+    class="select"
+    v-click-outside="closeDropdown"
+    :class="{
+      error: errors.length,
+      success: localValue && errors.length == 0,
+    }"
+  >
+    <label @click="togleDropdown"
+      ><p>{{ label }}<sup v-if="required">*</sup></p>
+    </label>
     <div class="select__input" @click="togleDropdown">
       <span class="select__text">{{ selectedText }}</span>
     </div>
@@ -15,6 +24,9 @@
         {{ item.text }}
       </li>
     </ul>
+    <div class="error-message" v-if="this.errors.length">
+      {{ currentError }}
+    </div>
   </div>
 </template>
 
@@ -36,6 +48,8 @@ export interface Data {
   dropdownOpen: boolean
   localData: ArraySelectData
   selectedText: string
+  currentError: string
+  errors: Array<string>
 }
 import { PropType, defineComponent } from "vue";
 export default defineComponent({
@@ -49,6 +63,7 @@ export default defineComponent({
     },
     modelValue: {
       type: [String, Number],
+      default: 0
     },
     label: {
       type: String,
@@ -58,23 +73,36 @@ export default defineComponent({
     },
     placeholder: {
       type: String,
-    }
+    },
+    validators: {
+      type: Array,
+    },
+    required: {
+      type: Boolean,
+    },
   },
   name: 'UISelect',
+
   data(): Data {
     return {
       dropdownOpen: false,
       localValue: this.value || this.modelValue || null,
       localData: this.data,
-      selectedText: this.placeholder || ''
-    }
-  },
-  computed: {
-    selectedID() {
-      return this.localValue ? this.localValue.id : ''
+      selectedText: this.placeholder || '',
+      currentError: '',
+      errors: [],
     }
   },
   methods: {
+    validate(fromParent = false) {
+      this.errors = []
+      this.validators.forEach((validator: any) => {
+        const result = validator(this.localValue)
+        if (result.error) {
+          this.errors.push(result.message)
+        }
+      })
+    },
     selectItem(id: ID) {
       const selected = this.localData.find((el: SelectDataItem) => {
         return el.id === id
@@ -84,24 +112,40 @@ export default defineComponent({
         selected.selected = false
         this.localValue = ''
         this.selectedText = this.placeholder
-        return
+      } else {
+        this.localData.forEach((el: SelectDataItem) => {
+          el.selected = false
+        });
+        selected.selected = true
+        this.localValue = selected.value
+        this.selectedText = selected.text
       }
-      this.localData.forEach((el: SelectDataItem) => {
-        el.selected = false
-      });
-      selected.selected = true
-      this.localValue = selected.value
-      this.selectedText = selected.text
+
       this.$emit('change', selected.id)
       this.$emit('update:modelValue', selected.id)
       this.closeDropdown()
     },
     togleDropdown() {
       this.dropdownOpen = !this.dropdownOpen
+      if (!this.dropdownOpen) {
+        this.validate()
+      }
     },
     closeDropdown() {
       this.dropdownOpen = false
-      this.selectedText
+      this.validate()
+    },
+  },
+  watch: {
+    errors: {
+      handler: function (val) {
+        if (val.length) {
+          this.currentError = this.errors[0]
+        } else {
+          this.currentError = ''
+        }
+      },
+      deep: true,
     },
   },
   created() {
@@ -119,6 +163,17 @@ export default defineComponent({
     display: block;
     $parent: &;
     position: relative;
+    padding-bottom: 24px;
+
+    .error-message {
+      color: #fb7d81;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+    }
 
     &__input {
       cursor: pointer;
@@ -126,7 +181,7 @@ export default defineComponent({
       font-size: 16px;
       line-height: 24px;
       color: #666666;
-      padding: 16px;
+      padding: 9px 16px;
       border: none;
       width: 100%;
       background-color: #fff;
@@ -143,11 +198,12 @@ export default defineComponent({
 
     &__dropdown {
       position: absolute;
-      top: calc(100% + 3px);
+      top: calc(100% - 20px);
       width: 100%;
       padding: 10px;
       background-color: var(--light-color);
       border-radius: 4px;
+      z-index: 10;
     }
 
     &__dropdown-item {

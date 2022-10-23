@@ -64,44 +64,82 @@
   <div class="form">
     <h2>Form</h2>
     <ui-form>
-      <ui-input name="name" placeholder="Введите Имя" label="Имя" value="" />
-      <ui-input
-        name="surname"
-        placeholder="Введите Фамилию"
-        label="Фамилия"
-        value=""
-      />
-      <ui-checkbox name="agreement" value
-        >Согласны ли вы на обработку данных</ui-checkbox
-      >
+      <template #default="{ validators }">
+        <ui-input
+          :validators="[validators.required, validators.length(5)]"
+          name="name"
+          placeholder="Введите Имя"
+          label="Имя"
+          value=""
+          required
+        />
+        <ui-input
+          :validators="[validators.required, validators.email]"
+          name="surname"
+          placeholder="Введите e-mail"
+          label="e-mail"
+          value=""
+          required
+        />
 
-      <ui-select
-        label="Страна проживания"
-        name="contry"
-        placeholder="Выберите Страну"
-        :data="[
-          {
-            id: 0,
-            value: 'ru',
-            text: 'Russia',
-            selected: false,
-          },
-          {
-            id: 1,
-            value: 'usa',
-            text: 'USA',
-            selected: false,
-          },
-          {
-            id: 2,
-            value: 'au',
-            text: 'Australia',
-            selected: false,
-          },
-        ]"
-      >
-        Select
-      </ui-select>
+        <ui-checkbox
+          name="agreement"
+          :validators="[validators.required]"
+          required
+        >
+          Согласны ли вы на обработку данных
+        </ui-checkbox>
+
+        <ui-checkbox-btn>asdasdads </ui-checkbox-btn>
+
+        <ui-radio-btn
+          name="name"
+          :data="[
+            {
+              value: 'sd123',
+              label: 'пункт 1',
+              checked: false,
+            },
+            {
+              value: 'asdasd',
+              label: 'пункт 2',
+              checked: true,
+            },
+          ]"
+        ></ui-radio-btn>
+
+        <ui-range></ui-range>
+
+        <ui-select
+          label="Страна проживания"
+          :validators="[validators.required]"
+          name="contry"
+          placeholder="Выберите Страну"
+          required
+          :data="[
+            {
+              id: 0,
+              value: 'ru',
+              text: 'Russia',
+              selected: false,
+            },
+            {
+              id: 1,
+              value: 'usa',
+              text: 'USA',
+              selected: false,
+            },
+            {
+              id: 2,
+              value: 'au',
+              text: 'Australia',
+              selected: false,
+            },
+          ]"
+        >
+          Select
+        </ui-select>
+      </template>
     </ui-form>
   </div>
   <div class="table">

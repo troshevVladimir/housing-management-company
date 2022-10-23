@@ -4,14 +4,23 @@
       class="checkbox"
       :class="[
         `checkbox--size-${this.size}`,
-        { 'checkbox--active': this.localValue },
+        {
+          'checkbox--active': localValue,
+        },
       ]"
       @click="clickHandler"
     >
       <input type="checkbox" :id="`checkbox-${name}`" v-model="localValue" />
       <div class="checkbox__toggler"></div>
     </div>
-    <label :for="`checkbox-${name}`"><slot /></label>
+
+    <label :for="`checkbox-${name}`">
+      <slot /> <sup v-if="required">*</sup>
+    </label>
+
+    <div class="error-message" v-if="errors">
+      {{ errors }}
+    </div>
   </div>
 </template>
 
@@ -34,19 +43,30 @@ export default {
       default: 'default',
       validator: (value) => ['default', 'small'].includes(value),
     },
+    required: {
+      type: Boolean,
+    },
   },
   data() {
     return {
       localValue: this.modelValue,
+      errors: '',
     }
   },
   methods: {
     clickHandler() {
       this.localValue = !this.localValue
     },
+    validate() {
+      this.errors = ''
+      if (this.required && !this.localValue) {
+        this.errors = 'Тут надо отметить обязательно'
+      }
+    },
   },
   watch: {
     localValue(val) {
+      this.validate()
       this.$emit('change', val)
       this.$emit('update:modelValue', val)
     },
@@ -64,6 +84,8 @@ export default {
   .checkbox-wrapper {
     display: flex;
     align-items: center;
+    position: relative;
+    padding-bottom: 24px;
   }
 
   .checkbox-wrapper label {
@@ -71,6 +93,16 @@ export default {
     cursor: pointer;
     display: inline-block;
     width: initial;
+  }
+
+  .error-message {
+    color: #fb7d81;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
   }
 
   .checkbox {

@@ -14,6 +14,9 @@ import UICheckbox from '@/components/ui/UICheckbox.vue';
 import UISelect from '@/components/ui/UISelect.vue';
 import UIForm from '@/components/ui/UIForm.vue';
 import UITable from '@/components/ui/UITable.vue';
+import CheckboxBtn from '@/components/ui/CheckboxBtn.vue';
+import RadioBtn from '@/components/ui/RadioBtn.vue';
+import UIRange from '@/components/ui/UIRange.vue';
 
 
 import "@/styles/index.scss";
@@ -34,6 +37,9 @@ app.component('ui-checkbox', UICheckbox)
 app.component('ui-select', UISelect)
 app.component('ui-form', UIForm)
 app.component('ui-table', UITable)
+app.component('ui-checkbox-btn', CheckboxBtn)
+app.component('ui-radio-btn', RadioBtn)
+app.component('ui-range', UIRange)
 
 app.use(store);
 app.use(router);
