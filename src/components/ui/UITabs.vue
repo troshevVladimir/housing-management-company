@@ -44,23 +44,24 @@ export default {
   .tabs {
     display: flex;
     flex-direction: column;
-    align-items: center;
     width: 100%;
   }
 
   .tabs__body {
+    position: relative;
+    overflow: hidden;
     width: 100%;
     background: #f5f5f8;
     border-radius: 16px;
     padding: 20px 24px;
     min-height: 100px;
-
     transition: min-height ease 2s;
   }
 
   .tabs__buttons {
     display: flex;
     align-items: center;
+    margin-bottom: 8px;
   }
 
   .tabs__button {
@@ -68,9 +69,9 @@ export default {
     font-weight: 500;
     font-size: 16px;
     line-height: 150%;
-    color: #5a8cf1;
+    color: var(--text-color);
     margin-right: 24px;
-    padding-bottom: 16px;
+    padding-bottom: 4px;
     border-bottom: 2px solid transparent;
   }
 

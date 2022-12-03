@@ -20,9 +20,12 @@ import UIFileInput from '@/components/ui/UIFileInput.vue';
 import UIDatapicker from '@/components/ui/UIDatapicker.vue';
 import UIZip from '@/components/ui/UIZip.vue';
 
-
 import "@/styles/index.scss";
 
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faPhone, faArrowRight, faArrowUpRightFromSquare, faPlus, faMinus} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+library.add(faPhone, faArrowRight, faArrowUpRightFromSquare, faPlus, faMinus);
 const app = createApp(App);
 
 Object.keys(directives).forEach((key) => {
@@ -44,6 +47,8 @@ app.component('ui-range', UIRange)
 app.component('ui-file-input', UIFileInput)
 app.component('ui-data-picker', UIDatapicker)
 app.component('ui-zip', UIZip)
+
+app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.use(store);
 app.use(router);

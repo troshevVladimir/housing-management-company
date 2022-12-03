@@ -1,10 +1,10 @@
 <template>
   <component
-    :is="component"
+    :is="linkComponent"
     class="button"
-    :to="!external ? routerLinkTo : false"
+    :to="!external ? routerLinkTo : null"
+    :href="external ? routerLinkTo : null"
     :external="!!external"
-    :href="external ? routerLinkTo : false"
     :class="{
       [`button--${kind}`]: kind,
       [`button--type-${component}`]: component,
@@ -15,6 +15,7 @@
     <slot name="before" />
     <slot />
     <slot name="after" />
+    <font-awesome-icon :icon="iconName"/>
   </component>
 </template>
 
@@ -44,13 +45,17 @@ export default {
     }
   },
   computed: {
-    component() {
+    linkComponent() {
       if (!this.routerLinkTo) {
         return 'button'
       } else {
         return this.external ? 'a' : 'router-link'
       }
     },
+    iconName () {
+      if (!this.routerLinkTo) return
+      return this.external ? 'arrow-right' : 'arrow-up-right-from-square'
+    }
   },
 };
 </script>
@@ -64,10 +69,8 @@ export default {
     line-height: 22px;
     letter-spacing: 0.16em;
     $parent: &;
-    padding: 20px 40px;
+
     transition: all ease 0.4s;
-    text-decoration: none;
-    box-shadow: 0 10px 20px #888;
     border-radius: 10px;
     border-style: none;
     display: inline-flex;
@@ -83,6 +86,16 @@ export default {
 
     @media screen and (max-width: $mobile) {
       width: 100%;
+    }
+
+    &--type-router-link {
+      text-decoration: underline;
+      border-color: #333;
+      color: #333;
+    }
+
+    &--type-button {
+      cursor: pointer;
     }
 
     &--primary {
@@ -118,6 +131,33 @@ export default {
         color: #afafaf;
       }
     }
+  }
+
+  a.button {
+    background: transparent !important;
+    text-decoration: none;
+    color: rgb(90, 78, 255);
+
+    &:hover {
+      background: transparent;
+    }
+    &:after {
+      width: 20px;
+    }
+
+    &--disabled {
+      color: #afafaf !important;
+    }
+  }
+
+  button.button {
+    $parent: &;
+    padding: 20px 40px;
+    box-shadow: 0 10px 20px #888;
+
+    &:active {
+      box-shadow: 0 5px 10px #999;
+    }
 
     &--disabled {
       pointer-events: none;
@@ -125,22 +165,8 @@ export default {
 
     &--size {
       &-small {
-        padding: 6px 12px;
+        padding: 6px 18px;
       }
-    }
-
-    &--type-router-link {
-      text-decoration: underline;
-      border-color: #333;
-      color: #333;
-    }
-
-    &--type-button {
-      cursor: pointer;
-    }
-
-    &:active {
-      box-shadow: 0 5px 10px #999;
     }
   }
 </style>

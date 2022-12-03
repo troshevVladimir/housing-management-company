@@ -2,6 +2,7 @@
   <div class="accordion-container" :class="{ 'accordion-active': visible }">
     <div class="accordion-label" @click="accordionTogle">
       <slot name="label" />
+      <font-awesome-icon :icon="iconName" size="lg"/>
     </div>
     <div class="accordion-content">
       <slot name="content" />
@@ -36,6 +37,11 @@ export default defineComponent({
       this.visible = false
     },
   },
+  computed: {
+    iconName() {
+      return this.visible ? 'minus' : 'plus'
+    }
+  },
   watch: {
     visible(val) {
       if (val) {
@@ -58,10 +64,17 @@ export default defineComponent({
   }
 
   .accordion-label {
+    display: flex;
+    justify-content: space-between;
     cursor: pointer;
     background-color: #666;
     padding: 20px 10px;
     transition: all ease 0.4s;
+
+    &:hover {
+      color: var(--text-color);
+      background-color: #999;
+    }
   }
 
   .accordion-active {

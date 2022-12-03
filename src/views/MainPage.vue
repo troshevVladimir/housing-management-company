@@ -40,12 +40,17 @@
     <ui-button disabled>Disabled</ui-button>
     <ui-button kind="secondary">Secondary</ui-button>
     <ui-button kind="secondary" disabled>Disabled</ui-button>
-
+    <hr />
     <ui-button size="small">Small</ui-button>
     <ui-button size="small" kind="secondary">Small</ui-button>
     <ui-button size="small" disabled>Small</ui-button>
-
-    <ui-button router-link-to="http://localhost:8090/#tab1">Link</ui-button>
+    <hr />
+    <ui-button router-link-to="http://localhost:8090/sadasds" external
+      >Link</ui-button
+    >
+    <ui-button router-link-to="http://localhost:8090/sadasds" disabled
+      >Link</ui-button
+    >
   </div>
 
   <div class="tabs content-container">
@@ -58,6 +63,9 @@
         <p>adfaasdasdsdf</p>
       </ui-tab>
       <ui-tab id="1" title="Tab 2">Tab 2</ui-tab>
+      <ui-tab id="2" title="Tab 3">
+        Tab 312312312313 adfaasdasdsdf adfaasdasdsdf adfaasdasdsdf
+      </ui-tab>
     </ui-tabs>
   </div>
   <div class="form content-container">
@@ -81,7 +89,7 @@
           required
         />
 
-        <ui-checkbox
+        <!-- <ui-checkbox
           name="agreement"
           :validators="[validators.required]"
           required
@@ -138,9 +146,9 @@
         >
           Select
         </ui-select>
-        <ui-file-input> </ui-file-input>
+        <ui-file-input> </ui-file-input> -->
         <!-- <ui-data-picker></ui-data-picker> -->
-        <ui-zip></ui-zip>
+        <!-- <ui-zip></ui-zip> -->
       </template>
     </ui-form>
   </div>
@@ -158,11 +166,11 @@
 </template>
 
 <script>
-import SliderContainer from '@/components/SliderContainer.vue';
-import SliderSlide from '@/components/SliderSlide.vue';
+import SliderContainer from '@/components/SliderContainer.vue'
+import SliderSlide from '@/components/SliderSlide.vue'
 
 export default {
-  components: { SliderContainer, SliderSlide }
+  components: { SliderContainer, SliderSlide },
 }
 </script>
 
@@ -174,7 +182,7 @@ export default {
       display: flex;
       align-items: center;
       font-weight: 600;
-      color: var(--text-color);
+      color: currentColor;
     }
   }
 

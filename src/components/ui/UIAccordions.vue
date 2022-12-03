@@ -4,7 +4,7 @@
       <h3 class="accordions-title">{{ title }}</h3>
     </div>
     <slot />
-    <ui-button @click="closeAll">Close all</ui-button>
+    <ui-button @click="closeAll" size="small" kind="secondary">Close all</ui-button>
   </div>
 </template>
 
