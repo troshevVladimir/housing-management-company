@@ -106,7 +106,6 @@ export default {
   }
 
   .checkbox {
-    width: 100%;
     position: relative;
     display: inline-flex;
     flex-direction: row;
@@ -156,7 +155,7 @@ export default {
     height: 22px;
     border-radius: 50%;
     background: #fff;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 16px #ccc;
   }
 
   .checkbox--active .checkbox__toggler {

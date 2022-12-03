@@ -161,7 +161,9 @@ export default defineComponent({
   .select {
     width: 100%;
     display: block;
+
     $parent: &;
+
     position: relative;
     padding-bottom: 24px;
 
@@ -180,7 +182,7 @@ export default defineComponent({
       font-weight: 400;
       font-size: 16px;
       line-height: 24px;
-      color: #666666;
+      color: #666;
       padding: 9px 16px;
       border: none;
       width: 100%;
@@ -188,11 +190,11 @@ export default defineComponent({
       border-radius: 4px;
 
       &:hover {
-        outline: rgba(49, 112, 238, 0.5) auto 1px;
+        outline: #666 auto 1px;
       }
 
       &:focus-visible {
-        outline: rgba(49, 112, 238, 0.5) auto 1px;
+        outline: #555 auto 1px;
       }
     }
 

@@ -8,21 +8,37 @@
   >
     <p>{{ label }} <sup v-if="required">*</sup></p>
 
-    <input
-      @blur="validate"
-      type="text"
-      :placeholder="placeholder"
-      v-model="localValue"
-      :name="this.name"
-    />
-    <div class="error-message" v-if="this.errors.length">
+    <div>
+      <date-picker
+        v-model="localValue"
+        :placeholder="placeholder"
+        value-type="format"
+      >
+        <!-- <template #icon-calendar> -->
+        <!-- <icon-base
+            icon-name="tip"
+            :height="24"
+            :width="24"
+            view-box="0 0 24 24"
+          >
+            <IconCalendar />
+          </icon-base> -->
+        <!-- </template> -->
+      </date-picker>
+      <!-- <date-picker v-model="time2" type="datetime"></date-picker> -->
+      <!-- <date-picker v-model="time3" range></date-picker> -->
+    </div>
+    <div v-if="errors.length" class="error-message">
       {{ currentError }}
     </div>
   </label>
 </template>
 
 <script>
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
 export default {
+  components: { DatePicker },
   props: {
     value: {
       type: String,
@@ -42,6 +58,7 @@ export default {
     },
     validators: {
       type: Array,
+      default: () => []
     },
     required: {
       type: Boolean,
@@ -55,20 +72,7 @@ export default {
       currentError: '',
     }
   },
-  methods: {
-    validate(e, fromParent = false) {
-      this.errors = []
-      this.validators.forEach((validator) => {
-        const result = validator(this.localValue)
-        if (result.error) {
-          this.errors.push(result.message)
-          if (fromParent) this.$parent.formError = true
-        }
 
-        if (!fromParent && !this.errors.length) this.$parent.formError = false
-      })
-    },
-  },
   computed: {},
   watch: {
     localValue(val) {
@@ -92,10 +96,27 @@ export default {
       this.$parent.formItems.push(this)
     }
   },
+  methods: {
+    validate(e, fromParent = false) {
+      this.errors = []
+      if (!this.validators && !this.validators.length) return
+      this.validators.forEach((validator) => {
+        const result = validator(this.localValue)
+        if (result.error) {
+          this.errors.push(result.message)
+          if (fromParent) this.$parent.formError = true
+        }
+
+        if (!fromParent && !this.errors.length) this.$parent.formError = false
+      })
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
+  @import '@/assets/vars';
+
   label {
     position: relative;
     padding-bottom: 24px;
@@ -122,24 +143,31 @@ export default {
     font-size: 12px;
     line-height: 16px;
   }
+</style>
 
-  input {
-    border-radius: 5px;
+<style>
+  .mx-datepicker {
+    width: 100%;
+    outline: none;
+  }
+
+  .mx-input {
+    box-shadow: none;
+    padding: 9px 16px;
     font-weight: 400;
     font-size: 16px;
-    line-height: 24px;
-    color: #666;
-    padding: 9px 16px;
-    border: 1px solid;
-    width: 100%;
+    line-height: 22px;
+    color: #828282;
+    height: initial;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+  }
 
-    &:focus {
-      outline: none;
-      border-color: #5a3839;
-    }
+  .mx-input:hover {
+    border-color: #dcdcdc;
+  }
 
-    &:hover {
-      border-color: #666;
-    }
+  .mx-input:focus {
+    border: 1px solid #5a3839 !important;
   }
 </style>

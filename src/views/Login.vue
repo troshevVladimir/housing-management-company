@@ -91,6 +91,7 @@ export default defineComponent({
 	.login {
 		width: 100%;
 		max-width: 600px;
+
 		&__form {
 			background-color: #fff !important;
 			padding: 50px;

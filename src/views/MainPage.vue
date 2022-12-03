@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content-container">
     <h2>Acordion</h2>
     <ui-accordions title="Title">
       <ui-accordion name="tab1" class="accordion">
@@ -7,6 +7,12 @@
           <h3 class="label">adfasdf</h3>
         </template>
         <template #content>
+          <p>adfaasdasdsdf</p>
+          <p>adfaasdasdsdf</p>
+          <p>adfaasdasdsdf</p>
+          <p>adfaasdasdsdf</p>
+          <p>adfaasdasdsdf</p>
+          <p>adfaasdasdsdf</p>
           <p>adfaasdasdsdf</p>
           <p>adfaasdasdsdf</p>
           <p>adfaasdasdsdf</p>
@@ -27,41 +33,34 @@
     </ui-accordions>
   </div>
 
-  <div class="inputs">
-    <h2>Inputs</h2>
-    <ui-input
-      label="input text"
-      tag="input"
-      type="text"
-      name="my-name"
-      placeholder="Введите значение"
-    ></ui-input>
-  </div>
-
-  <div class="buttons">
+  <div class="buttons content-container">
     <h2>Buttons</h2>
 
-    <ui-button kind="danger">Button</ui-button>
-    <ui-button kind="success">Button</ui-button>
-    <ui-button kind="">Button</ui-button>
+    <ui-button>Primary</ui-button>
+    <ui-button disabled>Disabled</ui-button>
+    <ui-button kind="secondary">Secondary</ui-button>
+    <ui-button kind="secondary" disabled>Disabled</ui-button>
 
-    <ui-button size="small" kind="danger">Button</ui-button>
-    <ui-button size="small" kind="success">Button</ui-button>
-    <ui-button size="small" kind="">Button</ui-button>
-
-    <ui-button disabled kind="danger">Button</ui-button>
+    <ui-button size="small">Small</ui-button>
+    <ui-button size="small" kind="secondary">Small</ui-button>
+    <ui-button size="small" disabled>Small</ui-button>
 
     <ui-button router-link-to="http://localhost:8090/#tab1">Link</ui-button>
   </div>
 
-  <div class="tabs">
+  <div class="tabs content-container">
     <h2>Tabs</h2>
     <ui-tabs>
-      <ui-tab id="0" title="Tab 1">Tab 1</ui-tab>
+      <ui-tab id="0" title="Tab 1">
+        <p>adfaasdasdsdf</p>
+        <p>adfaasdasdsdf</p>
+        <p>adfaasdasdsdf</p>
+        <p>adfaasdasdsdf</p>
+      </ui-tab>
       <ui-tab id="1" title="Tab 2">Tab 2</ui-tab>
     </ui-tabs>
   </div>
-  <div class="form">
+  <div class="form content-container">
     <h2>Form</h2>
     <ui-form>
       <template #default="{ validators }">
@@ -139,14 +138,33 @@
         >
           Select
         </ui-select>
+        <ui-file-input> </ui-file-input>
+        <!-- <ui-data-picker></ui-data-picker> -->
+        <ui-zip></ui-zip>
       </template>
     </ui-form>
   </div>
-  <div class="table">
-    <h2>Table</h2>
-    <ui-table />
+  <div class="content-container">
+    <h2>Pagination</h2>
+  </div>
+  <div class="content-container">
+    <h2>slider</h2>
+    <slider-container>
+      <slider-slide id="1"> asdasd </slider-slide>
+      <slider-slide id="2"> 123123 </slider-slide>
+      <slider-slide id="3"> SDADS </slider-slide>
+    </slider-container>
   </div>
 </template>
+
+<script>
+import SliderContainer from '@/components/SliderContainer.vue';
+import SliderSlide from '@/components/SliderSlide.vue';
+
+export default {
+  components: { SliderContainer, SliderSlide }
+}
+</script>
 
 
 <style lang="scss" scoped>

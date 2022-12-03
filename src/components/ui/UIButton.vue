@@ -1,26 +1,31 @@
 <template>
   <component
-    :is='component'
+    :is="component"
     class="button"
-    :to='routerLinkTo'
-    :class='{
-      [`button--${this.kind}`]: this.kind,
-      [`button--type-${this.component}`]: this.component,
-      [`button--size-${this.size}`]: this.size,
-      [`button--disabled`]: this.disabled
-    }'
+    :to="!external ? routerLinkTo : false"
+    :external="!!external"
+    :href="external ? routerLinkTo : false"
+    :class="{
+      [`button--${kind}`]: kind,
+      [`button--type-${component}`]: component,
+      [`button--size-${size}`]: size,
+      [`button--disabled`]: disabled,
+    }"
   >
-    <slot/>
+    <slot name="before" />
+    <slot />
+    <slot name="after" />
   </component>
 </template>
 
 <script>
 export default {
-  name: 'ui-button',
+  name: 'UIButton',
   props: {
     kind: {
       type: String,
-      validator: (val) => ['danger', 'success'].includes(val),
+      validator: (val) => ['primary', 'secondary'].includes(val),
+      default: 'primary'
     },
     size: {
       type: String,
@@ -34,68 +39,108 @@ export default {
       type: Object,
       default: null,
     },
+    external: {
+      type: Boolean,
+    }
   },
   computed: {
     component() {
-      return this.routerLinkTo ? 'router-link' : 'button';
+      if (!this.routerLinkTo) {
+        return 'button'
+      } else {
+        return this.external ? 'a' : 'router-link'
+      }
     },
   },
 };
 </script>
 
 <style lang='scss'>
-.button {
-  padding: 10px 30px;
-  border: 2px solid #666;
-  border-radius: 5px;
-  color: #000;
-  transition: all ease .4s;
-  text-decoration: none;
+  @import '@/assets/vars';
 
-  @media screen and (max-width: 600px) {
-    padding: 5px 15px;
-  }
+  .button {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.16em;
+    $parent: &;
+    padding: 20px 40px;
+    transition: all ease 0.4s;
+    text-decoration: none;
+    box-shadow: 0 10px 20px #888;
+    border-radius: 10px;
+    border-style: none;
+    display: inline-flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
 
-  &:hover {
-    color: rgb(88, 86, 86)
-  }
+    & > svg {
+      path {
+        stroke: currentcolor !important;
+      }
+    }
 
-  &--danger{
-    border-color: rgb(136, 58, 58);
+    @media screen and (max-width: $mobile) {
+      width: 100%;
+    }
 
-    &:hover {
-      border-color: rgb(92, 39, 39);
+    &--primary {
+      background-color: $yellow;
+      color: #fff;
+
+      &:hover {
+        background-color: $brown;
+      }
+
+      &#{$parent}--disabled {
+        background-color: #afafaf;
+        color: #fff;
+      }
+
+      &:active {
+        background-color: #6b3d3f;
+      }
+    }
+
+    &--secondary {
+      background: transparent;
+      color: $yellow;
+      border: 2px solid $yellow;
+
+      &:hover {
+        background-color: $yellow;
+        color: #fff;
+      }
+
+      &#{$parent}--disabled {
+        border-color: #afafaf;
+        color: #afafaf;
+      }
+    }
+
+    &--disabled {
+      pointer-events: none;
+    }
+
+    &--size {
+      &-small {
+        padding: 6px 12px;
+      }
+    }
+
+    &--type-router-link {
+      text-decoration: underline;
+      border-color: #333;
+      color: #333;
+    }
+
+    &--type-button {
+      cursor: pointer;
+    }
+
+    &:active {
+      box-shadow: 0 5px 10px #999;
     }
   }
-
-  &--success{
-    border-color: rgb(58, 136, 58);
-
-    &:hover {
-      border-color: rgb(39, 92, 61);
-    }
-  }
-
-  &--size {
-    &-small {
-      padding: 6px 12px;
-    }
-  }
-
-  &--type-router-link {
-    text-decoration: underline;
-    border-color: rgb(39, 66, 187);
-    color: rgb(39, 66, 187);
-  }
-
-  &--disabled {
-    pointer-events: none;
-    color: #666;
-    border-color: rgb(163, 160, 160);
-  }
-
-  &--type-button {
-    cursor: pointer;
-  }
-}
 </style>

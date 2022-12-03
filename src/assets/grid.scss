@@ -1,0 +1,94 @@
+@use "sass:math";
+@import './vars';
+
+.container {
+  margin: 0 auto;
+  padding: 0 10px;
+  width: 100%;
+
+  &-full {
+    width: 100%;
+  }
+
+  @media screen and (max-width: $tablet) {
+    max-width: 100%;
+    padding: 0 20px;
+  }
+
+  @media screen and (min-width: $desktop) {
+    max-width: 1660px;
+    padding: 0;
+  }
+
+  .row {
+    flex-wrap: wrap;
+    width: 100%;
+    display: flex;
+
+
+
+    // @media screen and (min-width: $desktop) {
+    //   column-gap: $desktop-gutter;
+    // }
+
+    // @media screen and (max-width: $desktop) {
+    //   column-gap: $tablet-gutter;
+    // }
+
+    // @media screen and (max-width: $mobile) {
+    //   column-gap: $mobile-gutter;
+    // }
+
+    // @media screen and (max-width: $mobile) {
+    //   margin: 0px math.div(-$mobile-gutter, 2);
+    // }
+
+    // @media screen and (max-width: $tablet) {
+    //   margin-left: math.div(-$tablet-gutter, 2);
+    //   margin-right: math.div(-$tablet-gutter, 2);
+    // }
+
+    // @media screen and (min-width: $desktop) {
+    //   margin-left: math.div(-$desktop-gutter, 2);
+    //   margin-right: math.div(-$desktop-gutter, 2);
+    // }
+
+    [class^=col] {
+      flex-shrink: 1;
+      max-width: 100%;
+
+      @media screen and (min-width: $desktop) {
+        padding: 0 math.div($desktop-gutter, 2);
+      }
+
+      @media screen and (max-width: $tablet) {
+        padding: 0 math.div($tablet-gutter, 2);
+      }
+
+      @media screen and (max-width: $mobile) {
+        padding: 0 math.div($mobile-gutter, 2);
+      }
+    }
+    @each $device in (d),(t),(m) {
+      @each $place in (1),(2),(3),(4),(5),(6),(7),(8),(9),(10),(11),(12){
+        .col-#{$device}-#{$place} {
+          @if #{$device} == 'd' {
+            flex-basis: calc(math.floor(math.div(100%, $desktop-amount) * $place));
+          }
+
+          @if #{$device} == 't' {
+            @media screen and (max-width: $desktop) {
+              flex-basis: calc(math.floor(math.div(100%, $tablet-amount) * $place)) ;
+            }
+          }
+
+          @if #{$device} == 'm' {
+            @media screen and (max-width: $mobile) {
+              flex-basis: calc(math.floor(math.div(100%, $mobile-amount) * $place));
+            }
+          }
+        }
+      }
+    }
+  }
+}

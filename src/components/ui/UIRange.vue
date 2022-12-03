@@ -83,7 +83,6 @@ export default {
     & .noUi-handle {
       top: -9px;
       right: -10px;
-      border-radius: 9px;
       width: 20px;
       height: 20px;
       background-color: #e7e7e7;
@@ -109,6 +108,7 @@ export default {
 
 <style lang="scss" scoped>
   @import 'nouislider/dist/nouislider.css';
+
   .price-values {
     display: flex;
     align-items: center;

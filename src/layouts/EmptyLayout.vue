@@ -12,30 +12,30 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-	name: "empty-layout",
+  name: "empty-layout",
 });
 </script>
 
 <style lang="scss" scoped>
-	.main {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		height: 100vh;
-		overflow: hidden;
+  .main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
 
-		.content {
-			background-color: rgb(75, 64, 100);
-			padding: 20px 15px;
-			flex: 1 0 auto;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-		}
+    .content {
+      background-color: #777;
+      padding: 20px 15px;
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
 
-		.footer {
-			flex: 0 0 200px;
-		}
-	}
+    .footer {
+      flex: 0 0 200px;
+    }
+  }
 </style>

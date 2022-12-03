@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-prettier-scss"
+  ],
+  "rules": {
+    "block-no-empty": true,
+    "unit-allowed-list": ["px", "%", "s"]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.scss", "*.scss"]
+    }
+]
+}

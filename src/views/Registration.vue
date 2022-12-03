@@ -225,11 +225,13 @@ export default defineComponent({
 	.registration {
 		width: 100%;
 		max-width: 600px;
+
 		&__form {
 			position: relative;
 			background-color: #fff !important;
 			padding: 50px;
 		}
+
 		&__form-label {
 			width: 100%;
 		}

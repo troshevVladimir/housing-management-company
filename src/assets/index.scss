@@ -1,0 +1,102 @@
+@import './grid';
+@import 'https://fonts.googleapis.com/css2?family=Commissioner:wght@800&family=Open+Sans:wght@400;600;700&display=swap';
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul > li {
+  list-style: none;
+}
+
+.content {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 27px;
+  color: #272727;
+  list-style: initial;
+}
+
+li.content {
+  margin-left: 20px;
+}
+
+
+.content + .content {
+  margin-top: 32px;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1, h2,h3,h4,h5 {
+  font-family: Commissioner, sans-serif;
+}
+
+.title {
+  font-weight: 800;
+  font-size: 36px;
+  line-height: 44px;
+  text-transform: uppercase;
+  color: #5A3839;
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: 42px;
+}
+
+.acent-p {
+  position: relative;
+  padding-left: 16px;
+
+  &::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: 4px;
+    background-color: $yellow;
+    margin-right: 16px;
+  }
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-between {
+  justify-content: space-between;
+}
+
+.flex-align-center {
+  align-items: center;
+}
+
+.flex-justify-end {
+  justify-content: flex-end;
+}
+
+.flex-justify-center {
+  justify-content: center;
+}
+
+.pos-r {
+  position: relative;
+}
+
+.content-container {
+  position: relative;
+  background: #FFF;
+  box-shadow: 0 0 30px  #ddd;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}

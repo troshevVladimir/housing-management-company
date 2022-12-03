@@ -49,7 +49,6 @@ export default defineComponent({
     overflow: hidden;
     grid-template-rows: 70px auto 100px;
     grid-template-columns: 200px auto;
-
     grid-template-areas:
       'header header'
       'sidebar content'
@@ -62,14 +61,13 @@ export default defineComponent({
 
     .sidebar {
       grid-area: sidebar;
-      background-color: rgb(110, 60, 60);
+      background-color: #777;
     }
 
     .content {
       grid-area: content;
-      background-color: rgb(101, 97, 109);
+      background-color: #777;
       overflow: auto;
-
       padding: 20px 15px;
     }
 

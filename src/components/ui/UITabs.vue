@@ -11,7 +11,9 @@
         {{ tab.title }}
       </li>
     </ul>
-    <slot />
+    <div class="tabs__body">
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -38,13 +40,24 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
   .tabs {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
   }
+
+  .tabs__body {
+    width: 100%;
+    background: #f5f5f8;
+    border-radius: 16px;
+    padding: 20px 24px;
+    min-height: 100px;
+
+    transition: min-height ease 2s;
+  }
+
   .tabs__buttons {
     display: flex;
     align-items: center;
@@ -66,6 +79,6 @@ export default {
   }
 
   .tabs__button--active {
-    border-bottom: 2px solid currentColor;
+    border-bottom: 2px solid currentcolor;
   }
 </style>

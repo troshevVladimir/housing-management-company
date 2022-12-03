@@ -1,8 +1,6 @@
 <template>
-  <div v-show="isActive" class="tabs__body">
-    <div class="tabs__content">
-      <slot></slot>
-    </div>
+  <div v-show="isActive" class="tabs__content">
+    <slot></slot>
   </div>
 </template>
 
@@ -37,14 +35,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .tabs__body {
-    width: 100%;
-  }
-
   .tabs__content {
-    background: #f5f5f8;
-    border-radius: 16px;
-    padding: 20px 24px;
     width: 100%;
   }
 

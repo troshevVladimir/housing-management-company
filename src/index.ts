@@ -13,10 +13,12 @@ import UITabs from '@/components/ui/UITabs.vue';
 import UICheckbox from '@/components/ui/UICheckbox.vue';
 import UISelect from '@/components/ui/UISelect.vue';
 import UIForm from '@/components/ui/UIForm.vue';
-import UITable from '@/components/ui/UITable.vue';
 import CheckboxBtn from '@/components/ui/CheckboxBtn.vue';
 import RadioBtn from '@/components/ui/RadioBtn.vue';
 import UIRange from '@/components/ui/UIRange.vue';
+import UIFileInput from '@/components/ui/UIFileInput.vue';
+import UIDatapicker from '@/components/ui/UIDatapicker.vue';
+import UIZip from '@/components/ui/UIZip.vue';
 
 
 import "@/styles/index.scss";
@@ -36,10 +38,12 @@ app.component('ui-tabs', UITabs)
 app.component('ui-checkbox', UICheckbox)
 app.component('ui-select', UISelect)
 app.component('ui-form', UIForm)
-app.component('ui-table', UITable)
 app.component('ui-checkbox-btn', CheckboxBtn)
 app.component('ui-radio-btn', RadioBtn)
 app.component('ui-range', UIRange)
+app.component('ui-file-input', UIFileInput)
+app.component('ui-data-picker', UIDatapicker)
+app.component('ui-zip', UIZip)
 
 app.use(store);
 app.use(router);
