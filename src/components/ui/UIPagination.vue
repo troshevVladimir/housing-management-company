@@ -136,7 +136,7 @@ export default {
 
       &--active {
         font-weight: 700;
-        color: $yellow;
+        color: yellow;
         border-bottom: 2px solid currentcolor;
       }
     }

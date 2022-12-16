@@ -14,7 +14,7 @@ import CheckboxBtn from '@/components/ui/CheckboxBtn.vue';
 import RadioBtn from '@/components/ui/RadioBtn.vue';
 import UIRange from '@/components/ui/UIRange.vue';
 import UIFileInput from '@/components/ui/UIFileInput.vue';
-import UIDatapicker from '@/components/ui/UIDatapicker.vue';
+// import UIDatapicker from '@/components/ui/UIDatapicker.vue';
 import UIZip from '@/components/ui/UIZip.vue';
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -37,7 +37,7 @@ app.component('ui-checkbox-btn', CheckboxBtn)
 app.component('ui-radio-btn', RadioBtn)
 app.component('ui-range', UIRange)
 app.component('ui-file-input', UIFileInput)
-app.component('ui-data-picker', UIDatapicker)
+// app.component('ui-data-picker', UIDatapicker)
 app.component('ui-zip', UIZip)
 
 app.component('font-awesome-icon', FontAwesomeIcon)

@@ -97,11 +97,11 @@ export default {
     }
 
     &--primary {
-      background-color: $yellow;
+      background-color: yellow;
       color: #fff;
 
       &:hover {
-        background-color: $brown;
+        background-color: brown;
       }
 
       &#{$parent}--disabled {
@@ -116,11 +116,11 @@ export default {
 
     &--secondary {
       background: transparent;
-      color: $yellow;
-      border: 2px solid $yellow;
+      color: yellow;
+      border: 2px solid yellow;
 
       &:hover {
-        background-color: $yellow;
+        background-color: yellow;
         color: #fff;
       }
 

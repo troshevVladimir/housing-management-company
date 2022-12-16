@@ -35,9 +35,6 @@
 </template>
 
 <script>
-import 'tippy.js/themes/light.css'
-import DeviceMixin from '@/utils/DeviceMixin.js'
-
 export default {
   mixins: [DeviceMixin],
   props: {
