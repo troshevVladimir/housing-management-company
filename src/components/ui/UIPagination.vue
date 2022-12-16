@@ -55,13 +55,13 @@ export default {
   props: {
     total: {
       type: Number,
-      default: 10
-    }
+      default: 10,
+    },
   },
   data() {
     return {
       paginationVisibleAmount: 4,
-      curentPage: 1
+      curentPage: 1,
     }
   },
   computed: {
@@ -77,12 +77,12 @@ export default {
       } else {
         return this.visibleAmount
       }
-    }
+    },
   },
   watch: {
     curentPage(val) {
       this.$emit('change', val)
-    }
+    },
   },
   methods: {
     next() {
@@ -92,15 +92,12 @@ export default {
     prev() {
       if (this.curentPage === 1) return
       this.curentPage--
-    }
+    },
   },
-
 }
 </script>
 
 <style lang="scss">
-  @import '@/assets/vars';
-
   .pagination {
     box-sizing: border-box;
     display: inline-flex;

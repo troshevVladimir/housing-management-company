@@ -1,8 +1,5 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import { store } from "./store";
-import router from "./router";
-import directives from '@/utils/directives'
 
 import UIButton from '@/components/ui/UIButton.vue';
 import UIAccordions from '@/components/ui/UIAccordions.vue';
@@ -20,17 +17,12 @@ import UIFileInput from '@/components/ui/UIFileInput.vue';
 import UIDatapicker from '@/components/ui/UIDatapicker.vue';
 import UIZip from '@/components/ui/UIZip.vue';
 
-import "@/styles/index.scss";
-
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faPhone, faArrowRight, faArrowUpRightFromSquare, faPlus, faMinus} from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 library.add(faPhone, faArrowRight, faArrowUpRightFromSquare, faPlus, faMinus);
 const app = createApp(App);
 
-Object.keys(directives).forEach((key) => {
-  app.directive(key, directives[key])
-})
 
 app.component('ui-button', UIButton)
 app.component('ui-accordions', UIAccordions)
@@ -50,6 +42,4 @@ app.component('ui-zip', UIZip)
 
 app.component('font-awesome-icon', FontAwesomeIcon)
 
-app.use(store);
-app.use(router);
 app.mount("#app");

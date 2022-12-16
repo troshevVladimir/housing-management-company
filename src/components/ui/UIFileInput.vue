@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import 'tippy.js/themes/light.css';
+import 'tippy.js/themes/light.css'
 import DeviceMixin from '@/utils/DeviceMixin.js'
 
 export default {
@@ -52,7 +52,7 @@ export default {
     },
     validators: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     required: {
       type: Boolean,
@@ -70,7 +70,7 @@ export default {
   computed: {
     getFiles() {
       return this.localValue.join(', ')
-    }
+    },
   },
   watch: {
     localValue(val) {
@@ -98,12 +98,12 @@ export default {
       this.errors = []
       const files = e.target.files
       if (files.length > 5) {
-        e.preventDefault();
+        e.preventDefault()
         this.errors.push('Вы не можите выбрать больше 5 файлов')
         return
       }
       for (let index = 0; index < files.length; index++) {
-        const element = files[index];
+        const element = files[index]
         this.localValue.push(element.name)
       }
     },
@@ -125,15 +125,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '@/assets/vars';
-
   .wrapper {
     display: flex;
     align-items: center;
     margin-bottom: 24px;
     max-width: 177px;
 
-    @media screen and (max-width: $mobile) {
+    @media screen and (max-width: 600px) {
       max-width: 100%;
     }
   }
@@ -151,7 +149,7 @@ export default {
     border-radius: 5px;
     margin-right: 20px;
 
-    @media screen and (max-width: $mobile) {
+    @media screen and (max-width: 600px) {
       margin-right: 0;
     }
 

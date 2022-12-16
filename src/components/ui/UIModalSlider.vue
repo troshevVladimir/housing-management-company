@@ -72,10 +72,10 @@ export default {
   components: { Slider, Slide, IconX, IconCorner },
   props: {
     slides: {
-      type: Array
+      type: Array,
     },
     modalActions: {
-      type: Boolean
+      type: Boolean,
     },
   },
   data() {
@@ -85,13 +85,15 @@ export default {
           el: '.swiper-pagination',
           type: 'bullets',
         },
-      }
+      },
     }
   },
   mounted() {
     const slider = this.$refs.slider.swiper
     const sliderDescription = this.$refs.description.swiper
-    slider.on('slideChange', () => sliderDescription.slideTo(slider.activeIndex));
+    slider.on('slideChange', () =>
+      sliderDescription.slideTo(slider.activeIndex)
+    )
   },
   methods: {
     next() {
@@ -102,20 +104,18 @@ export default {
     },
     close() {
       this.$emit('close')
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>
-  @import '@/assets/vars';
-
   .buttons {
     display: flex;
     position: absolute;
     padding-bottom: 47px;
     transform: translate(0, -100%);
 
-    @media screen and (max-width: $mobile) {
+    @media screen and (max-width: 600px) {
       flex-direction: column;
       left: 0;
       right: 0;
@@ -127,7 +127,7 @@ export default {
       &:not(:last-child) {
         margin-right: 24px;
 
-        @media screen and (max-width: $mobile) {
+        @media screen and (max-width: 600px) {
           margin-bottom: 24px;
           margin-right: 0;
         }
@@ -170,11 +170,11 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
 
-    @media screen and (max-width: $tablet) {
+    @media screen and (max-width: 900px) {
       padding: 0 40px;
     }
 
-    @media screen and (max-width: $mobile) {
+    @media screen and (max-width: 600px) {
       padding: 0;
     }
   }
@@ -188,12 +188,12 @@ export default {
     padding: 0 10px 10px;
     cursor: pointer;
 
-    @media screen and (max-width: $tablet) {
+    @media screen and (max-width: 900px) {
       top: -30px;
       right: 40px;
     }
 
-    @media screen and (max-width: $mobile) {
+    @media screen and (max-width: 600px) {
       top: -35px;
       right: 10px;
     }
@@ -228,7 +228,7 @@ export default {
       background: #000;
     }
 
-    @media screen and (max-width: $mobile) {
+    @media screen and (max-width: 600px) {
       width: 40px;
       height: 40px;
       padding: 0;
@@ -244,7 +244,7 @@ export default {
       background-repeat: no-repeat;
       background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.0002 6.66667L28.3335 20L15.0002 33.3333' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
 
-      @media screen and (max-width: $mobile) {
+      @media screen and (max-width: 600px) {
         width: 20px;
         height: 20px;
         background-size: 20px 20px;
@@ -260,7 +260,7 @@ export default {
     left: -70px;
     right: -70px;
 
-    @media screen and (max-width: $mobile) {
+    @media screen and (max-width: 600px) {
       left: -30px;
       right: -30px;
     }
@@ -269,7 +269,7 @@ export default {
   .swiper-button-prev {
     transform: translate(-100%) rotate(180deg);
 
-    @media screen and (max-width: $tablet) {
+    @media screen and (max-width: 900px) {
       transform: translate(100%) rotate(180deg);
     }
   }
@@ -277,7 +277,7 @@ export default {
   .swiper-button-next {
     transform: translate(100%);
 
-    @media screen and (max-width: $tablet) {
+    @media screen and (max-width: 900px) {
       transform: translate(-100%);
     }
   }

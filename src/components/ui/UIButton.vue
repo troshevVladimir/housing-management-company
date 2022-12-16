@@ -15,7 +15,7 @@
     <slot name="before" />
     <slot />
     <slot name="after" />
-    <font-awesome-icon :icon="iconName"/>
+    <font-awesome-icon :icon="iconName" />
   </component>
 </template>
 
@@ -26,7 +26,7 @@ export default {
     kind: {
       type: String,
       validator: (val) => ['primary', 'secondary'].includes(val),
-      default: 'primary'
+      default: 'primary',
     },
     size: {
       type: String,
@@ -42,7 +42,7 @@ export default {
     },
     external: {
       type: Boolean,
-    }
+    },
   },
   computed: {
     linkComponent() {
@@ -52,17 +52,15 @@ export default {
         return this.external ? 'a' : 'router-link'
       }
     },
-    iconName () {
+    iconName() {
       if (!this.routerLinkTo) return
       return this.external ? 'arrow-right' : 'arrow-up-right-from-square'
-    }
+    },
   },
-};
+}
 </script>
 
 <style lang='scss'>
-  @import '@/assets/vars';
-
   .button {
     font-weight: 600;
     font-size: 16px;
@@ -84,7 +82,7 @@ export default {
       }
     }
 
-    @media screen and (max-width: $mobile) {
+    @media screen and (max-width: 600px) {
       width: 100%;
     }
 

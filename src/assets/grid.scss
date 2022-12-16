@@ -10,7 +10,7 @@
     width: 100%;
   }
 
-  @media screen and (max-width: $tablet) {
+  @media screen and (max-width: 900px) {
     max-width: 100%;
     padding: 0 20px;
   }
@@ -32,20 +32,20 @@
     // }
 
     // @media screen and (max-width: $desktop) {
-    //   column-gap: $tablet-gutter;
+    //   column-gap: 900px-gutter;
     // }
 
-    // @media screen and (max-width: $mobile) {
-    //   column-gap: $mobile-gutter;
+    // @media screen and (max-width: 600px) {
+    //   column-gap: 600px-gutter;
     // }
 
-    // @media screen and (max-width: $mobile) {
-    //   margin: 0px math.div(-$mobile-gutter, 2);
+    // @media screen and (max-width: 600px) {
+    //   margin: 0px math.div(-600px-gutter, 2);
     // }
 
-    // @media screen and (max-width: $tablet) {
-    //   margin-left: math.div(-$tablet-gutter, 2);
-    //   margin-right: math.div(-$tablet-gutter, 2);
+    // @media screen and (max-width: 900px) {
+    //   margin-left: math.div(-900px-gutter, 2);
+    //   margin-right: math.div(-900px-gutter, 2);
     // }
 
     // @media screen and (min-width: $desktop) {
@@ -61,12 +61,12 @@
         padding: 0 math.div($desktop-gutter, 2);
       }
 
-      @media screen and (max-width: $tablet) {
-        padding: 0 math.div($tablet-gutter, 2);
+      @media screen and (max-width: 900px) {
+        padding: 0 math.div(900px-gutter, 2);
       }
 
-      @media screen and (max-width: $mobile) {
-        padding: 0 math.div($mobile-gutter, 2);
+      @media screen and (max-width: 600px) {
+        padding: 0 math.div(600px-gutter, 2);
       }
     }
     @each $device in (d),(t),(m) {
@@ -78,13 +78,13 @@
 
           @if #{$device} == 't' {
             @media screen and (max-width: $desktop) {
-              flex-basis: calc(math.floor(math.div(100%, $tablet-amount) * $place)) ;
+              flex-basis: calc(math.floor(math.div(100%, 900px-amount) * $place)) ;
             }
           }
 
           @if #{$device} == 'm' {
-            @media screen and (max-width: $mobile) {
-              flex-basis: calc(math.floor(math.div(100%, $mobile-amount) * $place));
+            @media screen and (max-width: 600px) {
+              flex-basis: calc(math.floor(math.div(100%, 600px-amount) * $place));
             }
           }
         }

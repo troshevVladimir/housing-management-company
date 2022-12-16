@@ -64,36 +64,18 @@ export default {
         ],
       },
       {
-        test: /\.css$/i,
-        use: [
-          "style-loader",
-          {
-            loader: "css-loader",
-            options: {
-              modules: {
-                localIdentName: '[local]-[hash:base64:5]'
-              },
-            }
-          }
-        ],
-      },
-
-      {
         test: /\.sass$|\.scss$/,
         use: [
           // {
           //   loader: MiniCssExtractPlugin.loader,
           //   options: {},
           // },
-          'vue-style-loader',
+          'style-loader',
           {
             loader: "css-loader",
             options: {
               sourceMap: isDev,
             },
-          },
-          {
-            loader: "postcss-loader",
           },
           {
             loader: "sass-loader",

@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import DatePicker from 'vue2-datepicker';
-import 'vue2-datepicker/index.css';
+import DatePicker from 'vue2-datepicker'
+// import 'vue2-datepicker/index.css'
 export default {
   components: { DatePicker },
   props: {
@@ -58,7 +58,7 @@ export default {
     },
     validators: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     required: {
       type: Boolean,
@@ -115,8 +115,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '@/assets/vars';
-
   label {
     position: relative;
     padding-bottom: 24px;
