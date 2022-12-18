@@ -1,10 +1,7 @@
-<template>asdad</template>
+<template>
+  <router-view></router-view>
+</template>
 
-<script lang="ts">
+<script>
 </script>
 
-<style lang="scss">
-  body {
-    --bs-body-bg: #ccc;
-  }
-</style>

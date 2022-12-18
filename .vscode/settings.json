@@ -1,3 +1,8 @@
 {
-  "editor.defaultFormatter": "octref.vetur"
+  "editor.defaultFormatter": "octref.vetur",
+  "vetur.format.defaultFormatter.js": "prettier",
+  "editor.formatOnSave": true,
+  "eslint.format.enable": true,
+  "vetur.format.options.useTabs": false,
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": true }
 }

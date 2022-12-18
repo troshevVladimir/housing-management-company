@@ -36,7 +36,6 @@
 
 <script>
 export default {
-  mixins: [DeviceMixin],
   props: {
     label: {
       type: String,

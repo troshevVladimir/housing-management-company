@@ -1,5 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+import router from '@/router'
+
 
 import UIButton from '@/components/ui/UIButton.vue';
 import UIAccordions from '@/components/ui/UIAccordions.vue';
@@ -10,7 +12,7 @@ import UITabs from '@/components/ui/UITabs.vue';
 import UICheckbox from '@/components/ui/UICheckbox.vue';
 import UISelect from '@/components/ui/UISelect.vue';
 import UIForm from '@/components/ui/UIForm.vue';
-import CheckboxBtn from '@/components/ui/CheckboxBtn.vue';
+import UICheckBox from '@/components/ui/UICheckBox/index.vue';
 import RadioBtn from '@/components/ui/RadioBtn.vue';
 import UIRange from '@/components/ui/UIRange.vue';
 import UIFileInput from '@/components/ui/UIFileInput.vue';
@@ -33,7 +35,7 @@ app.component('ui-tabs', UITabs)
 app.component('ui-checkbox', UICheckbox)
 app.component('ui-select', UISelect)
 app.component('ui-form', UIForm)
-app.component('ui-checkbox-btn', CheckboxBtn)
+app.component('ui-switch', UICheckBox)
 app.component('ui-radio-btn', RadioBtn)
 app.component('ui-range', UIRange)
 app.component('ui-file-input', UIFileInput)
@@ -41,5 +43,8 @@ app.component('ui-file-input', UIFileInput)
 app.component('ui-zip', UIZip)
 
 app.component('font-awesome-icon', FontAwesomeIcon)
+
+
+app.use(router)
 
 app.mount("#app");
