@@ -36,9 +36,8 @@ export default {
     disabled: {
       type: Boolean,
     },
-    routerLinkTo: {
-      type: Object,
-      default: null,
+    linkTo: {
+      type: String,
     },
     external: {
       type: Boolean,
@@ -67,6 +66,7 @@ export default {
     line-height: 22px;
     letter-spacing: 0.16em;
     $parent: &;
+    cursor: pointer;
 
     transition: all ease 0.4s;
     border-radius: 10px;
@@ -97,11 +97,11 @@ export default {
     }
 
     &--primary {
-      background-color: yellow;
+      background-color: var(--main-color);
       color: #fff;
 
       &:hover {
-        background-color: brown;
+        background-color: var(--main-dark-color);
       }
 
       &#{$parent}--disabled {
@@ -116,11 +116,11 @@ export default {
 
     &--secondary {
       background: transparent;
-      color: yellow;
-      border: 2px solid yellow;
+      color: var(--main-color);
+      border: 2px solid var(--main-color);
 
       &:hover {
-        background-color: yellow;
+        background-color: var(--main-color);
         color: #fff;
       }
 
@@ -151,10 +151,13 @@ export default {
   button.button {
     $parent: &;
     padding: 20px 40px;
-    box-shadow: 0 10px 20px #888;
+
+    &:not(#{$parent}--disabled) {
+      box-shadow: 0 10px 20px #888;
+    }
 
     &:active {
-      box-shadow: 0 5px 10px #999;
+      box-shadow: 0 5px 10px #999 !important;
     }
 
     &--disabled {

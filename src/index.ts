@@ -2,8 +2,10 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from '@/router'
 
+import '@/assets/styles.css'
 
-import UIButton from '@/components/ui/UIButton.vue';
+
+import UIButton from '@/components/ui/UIButton/UIButton.vue';
 import UIAccordions from '@/components/ui/UIAccordions.vue';
 import UIAccordion from '@/components/ui/UIAccordion.vue';
 import UIInput from '@/components/ui/UIInput.vue';
